@@ -29,10 +29,9 @@ namespace mdRPG.Controllers
             _photoService = photoService;
         }
 
-        [HttpPost("/api/Photo/{profileOrGame}/{isBgPhoto}/{id}")]
+        [HttpPost("/api/Photo/{type}/{isBgPhoto}/{id}")]
         public async Task<BaseResponse> Upload(int type, int id, bool isBgPhoto, IFormFile file)
         {
-            Console.WriteLine("helo " + id);
             switch (type)
             {
                 case 1:

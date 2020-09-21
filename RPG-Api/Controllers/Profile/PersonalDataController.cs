@@ -29,14 +29,21 @@ namespace mdRPG.Controllers
         }
 
 
-        [HttpGet("{data}")]
-        public async Task<List<PersonalDataResource>> Get(string data)
+        [HttpGet("{user}")]
+        public async Task<PersonalDataResource> Get(string user)
+        {
+            var profile = await _personalDataService.GetProfileAsync(user);
+            var resource = _mapper.Map<PersonalData, PersonalDataResource>(profile);
+            return resource;
+        }
+
+        [HttpGet("search/{data}")]
+        public async Task<List<PersonalDataResource>> Search(string data)
         {
             var profileList = await _personalDataService.FindProfilesAsync(data);
             var resources = _mapper.Map<List<PersonalData>, List<PersonalDataResource>>(profileList);
             return resources;
         }
-
 
         // PUT api/<controller>/5
         [HttpPut("{id}")]

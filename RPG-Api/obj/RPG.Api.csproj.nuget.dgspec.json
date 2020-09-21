@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "G:\\git\\Pen-and-paper\\Api-RPG\\RPG-Api\\RPG.Api.csproj": {}
+    "G:\\git\\Pen-and-paper_API\\RPG-Api\\RPG.Api.csproj": {}
   },
   "projects": {
-    "G:\\git\\Pen-and-paper\\Api-RPG\\RPG-Api\\RPG.Api.csproj": {
+    "G:\\git\\Pen-and-paper_API\\RPG-Api\\RPG.Api.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "G:\\git\\Pen-and-paper\\Api-RPG\\RPG-Api\\RPG.Api.csproj",
+        "projectUniqueName": "G:\\git\\Pen-and-paper_API\\RPG-Api\\RPG.Api.csproj",
         "projectName": "RPG.Api",
-        "projectPath": "G:\\git\\Pen-and-paper\\Api-RPG\\RPG-Api\\RPG.Api.csproj",
+        "projectPath": "G:\\git\\Pen-and-paper_API\\RPG-Api\\RPG.Api.csproj",
         "packagesPath": "C:\\Users\\Marcin\\.nuget\\packages\\",
-        "outputPath": "G:\\git\\Pen-and-paper\\Api-RPG\\RPG-Api\\obj\\",
+        "outputPath": "G:\\git\\Pen-and-paper_API\\RPG-Api\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
@@ -54,6 +54,7 @@
               "version": "[2.0.9, )"
             },
             "Microsoft.NETCore.App": {
+              "suppressParent": "All",
               "target": "Package",
               "version": "[2.0.0, )",
               "autoReferenced": true
@@ -64,10 +65,16 @@
             }
           },
           "imports": [
-            "net461"
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48"
           ],
           "assetTargetFallback": true,
-          "warn": true
+          "warn": true,
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.300\\RuntimeIdentifierGraph.json"
         }
       }
     }
