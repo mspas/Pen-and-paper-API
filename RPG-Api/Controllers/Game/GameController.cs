@@ -31,11 +31,30 @@ namespace RPG.Api.Domain.Controllers
         }
 
 
+        [HttpGet("{id}")]
+        public async Task<GameResource> Get(int id)
+        {
+            var game = await _gameService.GetGameAsync(id);
+            var resource = _mapper.Map<Game, GameResource>(game);
+
+            var participantsProfiles = new List<PersonalDataResource>();
+
+            foreach (GameToPerson g2p in game.participants)
+            {
+                var profile = await _personalDataService.GetProfileAsync(g2p.playerId);
+                var profileResource = _mapper.Map<PersonalData, PersonalDataResource>(profile);
+                participantsProfiles.Add(profileResource);
+            }
+
+            resource.participantsProfiles = participantsProfiles;
+
+            return resource;
+        }
 
         // GET api/<controller>/5
 
-        [HttpGet("{data}")]
-        public async Task<List<GameResource>> Get(string data)
+        [HttpGet("search/{data}")]
+        public async Task<List<GameResource>> Search(string data)
         {
             var gamesList = await _gameService.FindGamesAsync(data);
             var gamesListResource = _mapper.Map<List<Game>, List<GameResource>>(gamesList);

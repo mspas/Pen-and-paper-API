@@ -31,6 +31,12 @@ namespace RPG.Api.Services.SGame
         public async Task<GameToPersonResponse> AddG2PAsync(GameToPerson g2p)
         {
             var response = await _gameToPersonRepository.AddG2PAsync(g2p);
+            if (g2p.isAccepted)
+            {
+                var toUpdateGame = await _gameRepository.GetGameAsync(g2p.gameId);
+                toUpdateGame.nofparticipants += 1;
+                var responseGame = _gameRepository.EditGame(toUpdateGame);
+            }
             await _unitOfWork.CompleteAsync();
             return response;
         }
