@@ -10,7 +10,7 @@ namespace RPG.Api.Domain.Services.SGame
     public interface IGameService
     {
         Task<Game> GetGameAsync(int gameId);
-        Task<List<Game>> FindGamesAsync(string data);
+        Task<SearchGameResponse> FindGamesAsync(SearchGameParameters searchParameters);
         Task<GameResponse> AddGameAsync(Game game);
         Task<GameResponse> EditGameAsync(Game game);
         Task<BaseResponse> DeleteGameAsync(int gameId);

@@ -42,6 +42,54 @@ namespace RPG.Api.Persistence.Repositories.RGame
                                     .FirstAsync(mbox => mbox.Id == gameId);
         }
 
+        public async Task<List<Game>> FindGamesAsync(SearchGameParameters searchParameters)
+        {
+            List<Game> results;
+
+            if (searchParameters.isAvaliable)
+            {
+                results = await _context.Games.Where(p => (p.title.StartsWith(searchParameters.title)) &&
+                                                          (searchParameters.categories.Contains(p.category)) &&
+                                                          (p.status == "Active" || (p.status == "Ongoing" && p.hotJoin == true)) &&
+                                                          (p.maxplayers - p.nofparticipants > 0))
+                                                  .OrderBy(p => p.title)
+                                                  .Skip((searchParameters.pageNumber - 1) * searchParameters.pageSize)
+                                                  .Take(searchParameters.pageSize).ToListAsync();
+            }
+            else
+            {
+                results = await _context.Games.Where(p => (p.title.StartsWith(searchParameters.title)) &&
+                                                          (searchParameters.categories.Contains(p.category)))
+                                                  .OrderBy(p => p.title)
+                                                  .Skip((searchParameters.pageNumber - 1) * searchParameters.pageSize)
+                                                  .Take(searchParameters.pageSize).ToListAsync();
+            }
+
+            return results;
+        }
+
+        public async Task<int> CountGamesAsync(SearchGameParameters searchParameters)
+        {
+            int count = 0;
+
+            if (searchParameters.isAvaliable)
+            {
+                count = await _context.Games.Where(p => (p.title.StartsWith(searchParameters.title)) &&
+                                                  (searchParameters.categories.Contains(p.category)) &&
+                                                  (p.status == "Active" || (p.status == "Ongoing" && p.hotJoin == true)) &&
+                                                  (p.maxplayers - p.nofparticipants > 0))
+                                            .CountAsync();
+            }
+            else
+            {
+                count = await _context.Games.Where(p => (p.title.StartsWith(searchParameters.title)) &&
+                                                  (searchParameters.categories.Contains(p.category)))
+                                            .CountAsync();
+            }
+
+            return count;
+        }
+
         public async Task<Game> GetGameSnapAsync(int gameId)
         {
             return await _context.Games.Include(p => p.gameMaster).FirstAsync(mbox => mbox.Id == gameId);

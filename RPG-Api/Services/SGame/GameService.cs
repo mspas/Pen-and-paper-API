@@ -4,6 +4,7 @@ using RPG.Api.Domain.Repositories;
 using RPG.Api.Domain.Repositories.RForum;
 using RPG.Api.Domain.Repositories.RGame;
 using RPG.Api.Domain.Services.Communication;
+using RPG.Api.Domain.Services.Profile;
 using RPG.Api.Domain.Services.SGame;
 using RPG.Api.Resources;
 using System;
@@ -21,14 +22,16 @@ namespace RPG.Api.Services.SGame
         private readonly IForumRepository _forumRepository;
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
+        private readonly IPersonalDataService _personalDataService;
 
-        public GameService(IGameRepository gameRepository, IGameToPersonRepository gameToPersonRepository, IForumRepository forumRepository, IUnitOfWork unitOfWork, IMapper mapper)
+        public GameService(IGameRepository gameRepository, IGameToPersonRepository gameToPersonRepository, IForumRepository forumRepository, IUnitOfWork unitOfWork, IMapper mapper, IPersonalDataService personalDataService)
         {
             _gameRepository = gameRepository;
             _gameToPersonRepository = gameToPersonRepository;
             _forumRepository = forumRepository;
             _unitOfWork = unitOfWork;
             _mapper = mapper;
+            _personalDataService = personalDataService;
         }
 
         public async Task<GameResponse> AddGameAsync(Game game)
@@ -72,80 +75,42 @@ namespace RPG.Api.Services.SGame
             throw new NotImplementedException();
         }
 
-        public async Task<List<Game>> FindGamesAsync(string data)
+        public async Task<SearchGameResponse> FindGamesAsync(SearchGameParameters searchParameters)
         {
-            var foundData = new List<Game>();
-            var pattern = "";
+            int pageSize = searchParameters.pageSize;
 
-            if (Int32.TryParse(data, out int id))
+            var foundGames = await _gameRepository.FindGamesAsync(searchParameters);
+            var countAll = await _gameRepository.CountGamesAsync(searchParameters);
+
+            var gamesListResource = _mapper.Map<List<Game>, List<GameResource>>(foundGames);
+
+            foreach (GameResource g in gamesListResource)
             {
-                var game = await _gameRepository.GetGameAsync(id);
-                foundData.Add(game);
-                return foundData;
-            }
-            else
-            {
-                string[] dataSearch = data.Split(".");
-                if (dataSearch.Length > 0)
+                var participantsProfiles = new List<PersonalDataResource>();
+
+                foreach (GameToPerson g2p in g.participants)
                 {
-                    if (dataSearch[0] != "")
-                        pattern += "(" + dataSearch[0] + ")";
-                    pattern += @"\w*(.)";
-
-                    if (dataSearch[1] != "")
-                    {
-                        dataSearch[1] = dataSearch[1].Replace('&', '|');
-                        pattern += "(" + dataSearch[1] + ")";
-                    }
-                    pattern += @"(.)";
-
-                    if (dataSearch[2] != "")
-                    {
-                        if (dataSearch[2] == "Yes")
-                            pattern += "(Yes)";
-                        else
-                            pattern += "(Yes|No)";
-
-                    }
-                    pattern += @"(.)";
-
-                    if (dataSearch[3] != "")
-                    {
-                        if (dataSearch[2] == "Yes")
-                            pattern += "(Yes|No)";
-                        else
-                            pattern += "(No)";
-                    }
+                    var profile = await _personalDataService.GetProfileAsync(g2p.playerId);
+                    var profileResource = _mapper.Map<PersonalData, PersonalDataResource>(profile);
+                    participantsProfiles.Add(profileResource);
                 }
-                Regex rgx = new Regex(pattern);
 
-                var gamesList = await _gameRepository.GetGameListAsync();
-
-                foreach (Game game in gamesList)
-                {
-                    var freeSpot = false;
-                    if (game.maxplayers - game.participants.Count > 0)
-                        freeSpot = true;
-
-                    var nextData = game.title + "." + game.category + ".";
-                    if ((game.status == "Active" && freeSpot) || (game.status == "Ongoing" && game.hotJoin && freeSpot))
-                        nextData += "Yes.";
-                    else
-                        nextData += "No.";
-
-                    if (game.status == "Ended")
-                        nextData += "Yes";
-                    else
-                        nextData += "No";
-
-                    if (rgx.IsMatch(nextData))
-                    {
-                        foundData.Add(await GetGameAsync(game.Id));
-                    }
-                }
+                g.participantsProfiles = participantsProfiles;
             }
-            return foundData;
+
+            double temp = (double)countAll / (double)pageSize;
+            int maxPages = (int) Math.Ceiling(temp);
+
+            var urlBaseParameters = "&pageSize=" + searchParameters.pageSize.ToString() + "&title=" + searchParameters.title + "&categoriesPattern=" + searchParameters.categoriesPattern + "&isAvaliable=" + searchParameters.isAvaliable.ToString();
+
+            var previousPage = searchParameters.pageNumber < 2 ? null :
+                "Game/search?pageNumber=" + (searchParameters.pageNumber - 1).ToString() + urlBaseParameters;
+            var nextPage = searchParameters.pageNumber == maxPages ? null :
+                "Game/search?pageNumber=" + (searchParameters.pageNumber + 1).ToString() + urlBaseParameters;
+
+            return new SearchGameResponse(gamesListResource, countAll, maxPages, previousPage, nextPage);
         }
+
 
         public async Task<Game> GetGameAsync(int gameId)
         {

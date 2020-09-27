@@ -11,6 +11,7 @@ using RPG.Api.Domain.Services.SGame;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using RPG.Api.Domain.Services.Profile;
+using RPG.Api.Domain.Services.Communication;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -51,32 +52,22 @@ namespace RPG.Api.Domain.Controllers
             return resource;
         }
 
-        // GET api/<controller>/5
-
-        [HttpGet("search/{data}")]
-        public async Task<List<GameResource>> Search(string data)
+        [HttpGet("search")]
+        public async Task<SearchGameResponse> Search([FromQuery] SearchGameParameters searchParameters)
         {
-            var gamesList = await _gameService.FindGamesAsync(data);
-            var gamesListResource = _mapper.Map<List<Game>, List<GameResource>>(gamesList);
+            if (searchParameters.title == null)
+                searchParameters.title = "";
+            if (searchParameters.categoriesPattern == null)
+                searchParameters.categories = new string[] { "Fantasy", "SciFi", "Mafia", "Cyberpunk", "Steampunk", "PostApo", "Zombie", "AltHistory", "Other" };
+            else
+                searchParameters.categories = searchParameters.categoriesPattern.Split(".");
 
-            foreach (GameResource g in gamesListResource)
-            {
-                var participantsProfiles = new List<PersonalDataResource>();
-
-                foreach (GameToPerson g2p in g.participants)
-                {
-                    var profile = await _personalDataService.GetProfileAsync(g2p.playerId);
-                    var profileResource = _mapper.Map<PersonalData, PersonalDataResource>(profile);
-                    participantsProfiles.Add(profileResource);
-                }
-
-                g.participantsProfiles = participantsProfiles;
-            }
-
-            return gamesListResource;
+            var searchResults = await _gameService.FindGamesAsync(searchParameters);
+            return searchResults;
         }
 
         // POST api/<controller>
+
         [HttpPost]
         public async Task<IActionResult> Post([FromBody]Game game)
         {
