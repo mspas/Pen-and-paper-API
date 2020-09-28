@@ -44,13 +44,12 @@ namespace mdRPG.Controllers
                 return foundFriends;
             }
 
-            var profileList = await _personalDataService.FindProfilesAsync(nick);
-            if (profileList == null)
+            var profile = await _personalDataService.GetProfileAsync(nick);
+            if (profile == null)
             {
                 return null;
             }
 
-            var profile = profileList.First();
             foundFriends = await _friendService.GetFriendsListAsync(profile.Id);
             return foundFriends;
 

@@ -43,7 +43,7 @@ namespace RPG.Api.Services
 
         public async Task<BaseResponse> UploadProfilePhotoAsync(int id, bool isBgPhoto, IFormFile file)
         {
-            var profile = await _personalDataRepository.GetProfile(id);
+            var profile = await _personalDataRepository.GetProfileById(id);
             if (profile == null)
                 return new BaseResponse(false, "Account not found.");
 
@@ -175,7 +175,7 @@ namespace RPG.Api.Services
 
         public async Task<BaseResponse> DeletePhotoAsync(int userId, string fileName)
         {
-            var profile = await _personalDataRepository.GetProfile(userId);
+            var profile = await _personalDataRepository.GetProfileById(userId);
 
             //  DEFINITELY TODO SOON //
 

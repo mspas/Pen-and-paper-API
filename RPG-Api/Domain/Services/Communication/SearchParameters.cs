@@ -3,19 +3,20 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace RPG.Api.Domain.Models
+namespace RPG.Api.Domain.Services.Communication
 {
-    public class SearchPlayerParameters
+    public class SearchParameters
     {
-        public SearchPlayerParameters(int pageNumber, int pageSize, string name)
+        public SearchParameters(int pageNumber, int pageSize)
         {
             this.pageNumber = pageNumber;
             this.pageSize = pageSize;
-            this.name = name;
+        }
+        public SearchParameters()
+        {
         }
 
         public int pageNumber { get; set; }
         public int pageSize { get; set; }
-        public string name { get; set;  }
     }
 }

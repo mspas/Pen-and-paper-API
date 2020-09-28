@@ -26,13 +26,13 @@ namespace RPG.Api.Persistence.Repositories.Profile
             return pdata;
         }
         
-        public async Task<PersonalData> GetProfile(string login)
+        public async Task<PersonalData> GetProfileByName(string name)
         {
-            var account =  await _context.Accounts.Include(mbox => mbox.PersonalData).FirstAsync(mbox => mbox.PersonalData.login == login);
+            var account =  await _context.Accounts.Include(mbox => mbox.PersonalData).FirstAsync(mbox => mbox.PersonalData.login == name);
             return account.PersonalData;
         }
 
-        public async Task<PersonalData> GetProfile(int id)
+        public async Task<PersonalData> GetProfileById(int id)
         {
             var account =  await _context.Accounts.Include(mbox => mbox.PersonalData).FirstAsync( mbox => mbox.Id == id);
             return account.PersonalData;
@@ -46,19 +46,26 @@ namespace RPG.Api.Persistence.Repositories.Profile
             return new BaseResponse(true, null);
         }
 
-        /*public async Task<PersonalData> GetProfileAsync(string login)
+        public async Task<List<PersonalData>> FindProfilesAsync(SearchProfileParameters searchParameters)
         {
-            var accounts = await _context.Accounts.Include(mbox => mbox.PersonalData).ToListAsync();
-            PersonalData pdata = null;
+            var results = new List<PersonalData>();
+            var accounts = await _context.Accounts.Include(mbox => mbox.PersonalData).Where(mbox => mbox.login.StartsWith(searchParameters.name))
+                                                  .OrderBy(p => p.login)
+                                                  .Skip((searchParameters.pageNumber - 1) * searchParameters.pageSize)
+                                                  .Take(searchParameters.pageSize).ToListAsync();
+
             foreach (Account acc in accounts)
             {
-                if (acc.login == login)
-                {
-                    pdata = acc.PersonalData;
-                    return pdata;
-                }
+                results.Add(acc.PersonalData);
             }
-            return pdata;
-        }*/
+
+            return results;
+        }
+
+        public async Task<int> CountProfilesAsync(SearchProfileParameters searchParameters)
+        {
+            var count = await _context.Accounts.Where(mbox => mbox.login.StartsWith(searchParameters.name)).OrderBy(p => p.login).CountAsync();
+            return count;
+        }
     }
 }

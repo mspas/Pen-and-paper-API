@@ -84,9 +84,9 @@ namespace RPG.Api.Services.Profile
         {
             if (userId == friend.player1Id)
             {
-                return await _personalDataRepository.GetProfile(friend.player2Id);
+                return await _personalDataRepository.GetProfileById(friend.player2Id);
             }
-            return await _personalDataRepository.GetProfile(friend.player1Id);
+            return await _personalDataRepository.GetProfileById(friend.player1Id);
         }
 
         private async Task<FriendResource> CreateFriendResourceAsync(int userId, Friend friend)

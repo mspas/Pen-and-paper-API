@@ -77,8 +77,6 @@ namespace RPG.Api.Services.SGame
 
         public async Task<SearchGameResponse> FindGamesAsync(SearchGameParameters searchParameters)
         {
-            int pageSize = searchParameters.pageSize;
-
             var foundGames = await _gameRepository.FindGamesAsync(searchParameters);
             var countAll = await _gameRepository.CountGamesAsync(searchParameters);
 
@@ -98,15 +96,15 @@ namespace RPG.Api.Services.SGame
                 g.participantsProfiles = participantsProfiles;
             }
 
-            double temp = (double)countAll / (double)pageSize;
+            double temp = (double)countAll / (double)searchParameters.pageSize;
             int maxPages = (int) Math.Ceiling(temp);
 
             var urlBaseParameters = "&pageSize=" + searchParameters.pageSize.ToString() + "&title=" + searchParameters.title + "&categoriesPattern=" + searchParameters.categoriesPattern + "&isAvaliable=" + searchParameters.isAvaliable.ToString();
 
             var previousPage = searchParameters.pageNumber < 2 ? null :
-                "Game/search?pageNumber=" + (searchParameters.pageNumber - 1).ToString() + urlBaseParameters;
+                "?pageNumber=" + (searchParameters.pageNumber - 1).ToString() + urlBaseParameters;
             var nextPage = searchParameters.pageNumber == maxPages ? null :
-                "Game/search?pageNumber=" + (searchParameters.pageNumber + 1).ToString() + urlBaseParameters;
+                "?pageNumber=" + (searchParameters.pageNumber + 1).ToString() + urlBaseParameters;
 
             return new SearchGameResponse(gamesListResource, countAll, maxPages, previousPage, nextPage);
         }

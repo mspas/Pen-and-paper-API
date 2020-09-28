@@ -12,7 +12,7 @@ namespace RPG.Api.Domain.Services.Profile
     {
         Task<PersonalData> GetProfileAsync(string login);
         Task<PersonalData> GetProfileAsync(int id);
-        Task<List<PersonalData>> FindProfilesAsync(string data);
+        Task<SearchProfileResponse> FindProfilesAsync(SearchProfileParameters searchParameters);
         Task<BaseResponse> EditProfileDataAsync(int id, PersonalData newProfile);
     }
 }

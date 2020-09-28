@@ -85,7 +85,7 @@ namespace RPG.Api.Services.SGame
 
         public async Task<List<GameToPerson>> GetG2PListAsync(string login)
         {
-            var profile = await _personalDataRepository.GetProfile(login);
+            var profile = await _personalDataRepository.GetProfileByName(login);
             var g2pList = await _gameToPersonRepository.GetG2PListAsync(profile.Id);
             for(int i = 0; i < g2pList.Count; i++)
             {

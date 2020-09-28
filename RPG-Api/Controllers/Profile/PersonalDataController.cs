@@ -10,6 +10,7 @@ using RPG.Api.Persistence;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using RPG.Api.Domain.Services.Profile;
+using RPG.Api.Domain.Services.Communication;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -37,12 +38,12 @@ namespace mdRPG.Controllers
             return resource;
         }
 
-        [HttpGet("search/{data}")]
-        public async Task<List<PersonalDataResource>> Search(string data)
+        [HttpGet("search")]
+        public async Task<SearchProfileResponse> Search([FromQuery] SearchProfileParameters searchParameters)
         {
-            var profileList = await _personalDataService.FindProfilesAsync(data);
-            var resources = _mapper.Map<List<PersonalData>, List<PersonalDataResource>>(profileList);
-            return resources;
+            if (searchParameters.name == null) searchParameters.name = "";
+            var result = await _personalDataService.FindProfilesAsync(searchParameters);
+            return result;
         }
 
         // PUT api/<controller>/5

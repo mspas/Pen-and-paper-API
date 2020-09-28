@@ -9,9 +9,10 @@ namespace RPG.Api.Domain.Repositories.Profile
 {
     public interface IPersonalDataRepository
     {
-        Task<PersonalData> GetProfile(string login);
-        Task<PersonalData> GetProfile(int id);
-        Task<List<PersonalData>> GetList();
+        Task<PersonalData> GetProfileByName(string name);
+        Task<PersonalData> GetProfileById(int id);
+        Task<List<PersonalData>> FindProfilesAsync(SearchProfileParameters searchParameters);
+        Task<int> CountProfilesAsync(SearchProfileParameters searchProfileParameters);
         Task<BaseResponse> UpdateProfile(PersonalData toUpdate);
     }
 }

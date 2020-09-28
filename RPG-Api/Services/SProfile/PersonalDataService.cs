@@ -9,6 +9,8 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using RPG.Api.Domain.Repositories;
+using AutoMapper;
+using RPG.Api.Resources;
 
 namespace RPG.Api.Services.Profile
 {
@@ -16,64 +18,38 @@ namespace RPG.Api.Services.Profile
     {
         private readonly IPersonalDataRepository _personalDataRepository;
         private readonly IUnitOfWork _unitOfWork;
+        private readonly IMapper _mapper;
 
-        public PersonalDataService(IPersonalDataRepository personalDataRepository, IUnitOfWork unitOfWork)
+        public PersonalDataService(IPersonalDataRepository personalDataRepository, IUnitOfWork unitOfWork, IMapper mapper)
         {
             _personalDataRepository = personalDataRepository;
             _unitOfWork = unitOfWork;
+            _mapper = mapper;
         }
 
-        public async Task<List<PersonalData>> FindProfilesAsync(string data)
+        public async Task<SearchProfileResponse> FindProfilesAsync(SearchProfileParameters searchParameters)
         {
-            var foundData = new List<PersonalData>();
-            var padataList = new List<PersonalData>();
+            var results = await _personalDataRepository.FindProfilesAsync(searchParameters);
+            var countAll = await _personalDataRepository.CountProfilesAsync(searchParameters);
 
-            string[] dataSearch = data.Split(".");
+            var profilesListResource = _mapper.Map<List<PersonalData>, List<PersonalDataResource>>(results);
 
-            switch (dataSearch.Length)
-            {
-                case 0:
-                    return null;
-                case 1:
-                    var profile = await _personalDataRepository.GetProfile(data);
-                    foundData.Add(profile);
-                    return foundData;
-                default:
-                    padataList = await _personalDataRepository.GetList();
-                    break;
-            }
+            double temp = (double)countAll / (double)searchParameters.pageSize;
+            int maxPages = (int)Math.Ceiling(temp);
 
-            var pattern = "";
-            if (dataSearch.Length > 1)
-            {
-                if (dataSearch[0] != "")
-                    pattern += "(" + dataSearch[0] + ")";
-                pattern += @"\w*(.)";
+            var urlBaseParameters = "&pageSize=" + searchParameters.pageSize.ToString() + "&name=" + searchParameters.name;
 
-                if (dataSearch[1] != "")
-                    pattern += "(" + dataSearch[1] + ")";
-                pattern += @"\w*(.)";
+            var previousPage = searchParameters.pageNumber < 2 ? null :
+                "?pageNumber=" + (searchParameters.pageNumber - 1).ToString() + urlBaseParameters;
+            var nextPage = searchParameters.pageNumber == maxPages ? null :
+                "?pageNumber=" + (searchParameters.pageNumber + 1).ToString() + urlBaseParameters;
 
-                if (dataSearch[2] != "")
-                    pattern += "(" + dataSearch[2] + ")";
-                pattern += @"\w*";
-            }
-            Regex rgx = new Regex(pattern);
-
-            foreach (PersonalData p in padataList)
-            {
-                var nextData = p.firstname + "." + p.lastname + "." + p.login;
-                if (rgx.IsMatch(nextData))
-                {
-                    foundData.Add(p);
-                }
-            }
-            return foundData;
+            return new SearchProfileResponse(profilesListResource, countAll, maxPages, previousPage, nextPage);
         }
 
         public async Task<BaseResponse> EditProfileDataAsync(int id, PersonalData newProfile)
         {
-            var oldProfile= _personalDataRepository.GetProfile(id).Result;
+            var oldProfile= _personalDataRepository.GetProfileById(id).Result;
             var toUpdateProfile = UpdateDataProfileAsync(newProfile, oldProfile);
             var response = await _personalDataRepository.UpdateProfile(toUpdateProfile);
 
@@ -84,12 +60,12 @@ namespace RPG.Api.Services.Profile
 
         public async Task<PersonalData> GetProfileAsync(string login)
         {
-            return await _personalDataRepository.GetProfile(login);
+            return await _personalDataRepository.GetProfileByName(login);
         }
 
         public Task<PersonalData> GetProfileAsync(int id)
         {
-            return _personalDataRepository.GetProfile(id);
+            return _personalDataRepository.GetProfileById(id);
         }
 
 
