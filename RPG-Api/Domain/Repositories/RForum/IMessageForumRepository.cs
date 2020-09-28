@@ -12,6 +12,7 @@ namespace RPG.Api.Domain.Repositories.RForum
         Task<MessageForum> GetMessageAsync(int messageId);
         Task<List<MessageForum>> GetMessageListAsync(int topicId);
         Task<List<MessageForum>> GetMessageListWithPageAsync(int topicId, int page);
+        Task<int> CountMessagesAsync(int topicId);
         Task<MessageForumResponse> AddMessageAsync(MessageForum message);
         MessageForumResponse EditMessage(MessageForum message);
         BaseResponse DeleteMessage(MessageForum message);

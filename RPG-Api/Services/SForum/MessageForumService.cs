@@ -63,12 +63,6 @@ namespace RPG.Api.Services.SForum
             int pages = toUpdateTopic.Messages.Count() / 10;
             int modpages = toUpdateTopic.Messages.Count() % 10;
 
-            if (pages >= toUpdateTopic.totalPages && modpages >= 0)
-            {
-                toUpdateTopic.totalPages += 1;
-            }
-            toUpdateTopic.messagesAmount += 1;
-
             var responseTopic = _topicRepository.EditTopic(toUpdateTopic);
             var responseForum = _forumRepository.EditForum(toUpdateForum);
             var responseGame = _gameRepository.EditGame(toUpdateGame);

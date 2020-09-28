@@ -82,7 +82,6 @@ namespace RPG.Api.Services.SForum
             toUpdate.lastActivityDate = topic.lastActivityDate;
             toUpdate.isPublic = topic.isPublic;
             toUpdate.topicName = topic.topicName;
-            toUpdate.totalPages = topic.totalPages;
 
             var response = _topicRepository.EditTopic(topic);
             await _unitOfWork.CompleteAsync();

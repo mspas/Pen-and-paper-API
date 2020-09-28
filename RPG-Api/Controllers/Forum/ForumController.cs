@@ -25,10 +25,10 @@ namespace mdRPG.Controllers
             _mapper = mapper;
         }
 
-        [HttpGet("{id}")]
-        public async Task<ForumResource> Get(int id)
+        [HttpGet("{id}/{pageSize}")]
+        public async Task<ForumResource> Get(int id, int pageSize)
         {
-            return await _forumService.GetForumAsync(id);
+            return await _forumService.GetForumAsync(id, pageSize);
         }
 
         [HttpPut("{id}")]

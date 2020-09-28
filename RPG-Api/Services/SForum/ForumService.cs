@@ -16,13 +16,15 @@ namespace RPG.Api.Services.SForum
     {
         private readonly IForumRepository _forumRepository;
         private readonly ITopicRepository _topicRepository;
+        private readonly IMessageForumRepository _messageForumRepository;
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
 
-        public ForumService(IForumRepository forumRepository, ITopicRepository topicRepository, IUnitOfWork unitOfWork, IMapper mapper)
+        public ForumService(IForumRepository forumRepository, ITopicRepository topicRepository, IMessageForumRepository messageForumRepository, IUnitOfWork unitOfWork, IMapper mapper)
         {
             _forumRepository = forumRepository;
             _topicRepository = topicRepository;
+            _messageForumRepository = messageForumRepository;
             _unitOfWork = unitOfWork;
             _mapper = mapper;
         }
@@ -52,11 +54,27 @@ namespace RPG.Api.Services.SForum
             return response;
         }
 
-        public async Task<ForumResource> GetForumAsync(int forumId)
+        public async Task<ForumResource> GetForumAsync(int forumId, int pageSize)
         {
             var forum = await _forumRepository.GetForumAsync(forumId);
             var forumResource = _mapper.Map<Forum, ForumResource>(forum);
-            forumResource.Topics = await _topicRepository.GetTopicListAsync(forumResource.Id);
+            var topics = await _topicRepository.GetTopicListAsync(forumResource.Id);
+
+            var topicsResource = new List<TopicResource>();
+
+            foreach (Topic t in topics)
+            {
+                var count = await _messageForumRepository.CountMessagesAsync(t.Id);
+                var resource = _mapper.Map<Topic, TopicResource>(t);
+
+                double temp = (double)count / (double)pageSize;
+                resource.messagesAmount = count;
+                resource.totalPages = (int)Math.Ceiling(temp);
+
+                topicsResource.Add(resource);
+            }
+
+            forumResource.Topics = topicsResource;
             return forumResource;
         }
     }

@@ -33,6 +33,11 @@ namespace RPG.Api.Persistence.Repositories.RForum
             return new MessageForumResponse(true, null, message);
         }
 
+        public async Task<int> CountMessagesAsync(int topicId)
+        {
+            return await _context.MessagesForum.Where(mbox => mbox.topicId == topicId).CountAsync();
+        }
+
         public async Task<MessageForum> GetMessageAsync(int messageId)
         {
             return await _context.MessagesForum.FirstAsync(mbox => mbox.Id == messageId);

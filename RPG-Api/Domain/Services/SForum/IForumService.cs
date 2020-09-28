@@ -10,7 +10,7 @@ namespace RPG.Api.Domain.Services.SForum
 {
     public interface IForumService
     {
-        Task<ForumResource> GetForumAsync(int forumId);
+        Task<ForumResource> GetForumAsync(int forumId, int pageSize);
         Task<BaseResponse> AddForumAsync(Forum forum);
         Task<BaseResponse> EditForumAsync(Forum forum);
         Task<BaseResponse> DeleteForumAsync(int forumId);

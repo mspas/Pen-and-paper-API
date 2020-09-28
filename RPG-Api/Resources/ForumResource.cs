@@ -11,6 +11,6 @@ namespace RPG.Api.Resources
         public int Id { get; set; }
         public bool isPublic { get; set; }
         public DateTime? lastActivityDate { get; set; }
-        public virtual List<Topic> Topics { get; set; }
+        public virtual List<TopicResource> Topics { get; set; }
     }
 }

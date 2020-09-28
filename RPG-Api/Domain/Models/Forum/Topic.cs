@@ -13,11 +13,9 @@ namespace RPG.Api.Domain.Models
         public string category { get; set; }
         public int authorId { get; set; }
         public bool isPublic { get; set; }
-        public int messagesAmount { get; set; }
         public DateTime createDate { get; set; }
         public DateTime? lastActivityDate { get; set; }
         public int lastActivityUserId { get; set; }
-        public int totalPages { get; set; }
         public virtual Forum forum { get; set; }
         public virtual ICollection<MessageForum> Messages { get; set; }
         public virtual ICollection<TopicToPerson> UsersConnected { get; set; }
