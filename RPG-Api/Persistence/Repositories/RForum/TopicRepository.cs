@@ -35,15 +35,13 @@ namespace RPG.Api.Persistence.Repositories.RForum
 
         public async Task<Topic> GetTopicAsync(int topicId)
         {
-            return await _context.Topics.Include(mbox => mbox.Messages)
-                                        .Include(mbox => mbox.UsersConnected)
+            return await _context.Topics.Include(mbox => mbox.UsersConnected)
                                         .FirstAsync(mbox => mbox.Id == topicId);
         }
 
         public async Task<List<Topic>> GetTopicListAsync(int forumId)
         {
-            return await _context.Topics.Include(mbox => mbox.Messages)
-                                        .Include(mbox => mbox.UsersConnected)
+            return await _context.Topics.Include(mbox => mbox.UsersConnected)
                                         .Where(mbox => mbox.forumId == forumId)
                                         .ToListAsync();
         }

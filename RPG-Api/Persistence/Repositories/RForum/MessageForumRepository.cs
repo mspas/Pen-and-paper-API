@@ -33,24 +33,25 @@ namespace RPG.Api.Persistence.Repositories.RForum
             return new MessageForumResponse(true, null, message);
         }
 
-        public async Task<int> CountMessagesAsync(int topicId)
-        {
-            return await _context.MessagesForum.Where(mbox => mbox.topicId == topicId).CountAsync();
-        }
-
         public async Task<MessageForum> GetMessageAsync(int messageId)
         {
             return await _context.MessagesForum.FirstAsync(mbox => mbox.Id == messageId);
         }
 
-        public async Task<List<MessageForum>> GetMessageListAsync(int topicId)
+        public async Task<MessageForum> GetTopicLastMessageAsync(int topicId)
         {
-            return await _context.MessagesForum.Where(mbox => mbox.topicId == topicId).ToListAsync();
+            return await _context.MessagesForum.Where(mbox => mbox.topicId == topicId).OrderByDescending(mbox => mbox.sendDdate).FirstOrDefaultAsync();
         }
 
-        public async Task<List<MessageForum>> GetMessageListWithPageAsync(int topicId, int page)
+        public async Task<List<MessageForum>> GetMessageListAsync(int topicId, int pageNumber, int pageSize)
         {
-            return await _context.MessagesForum.Where(mbox => mbox.topicId == topicId && mbox.pageNumber == page).ToListAsync();
+            return await _context.MessagesForum.Where(mbox => mbox.topicId == topicId).OrderBy(mbox => mbox.sendDdate).Skip((pageNumber - 1) * pageSize ).Take(pageSize).ToListAsync();
         }
+
+        public async Task<int> CountMessagesAsync(int topicId)
+        {
+            return await _context.MessagesForum.Where(mbox => mbox.topicId == topicId).CountAsync();
+        }
+
     }
 }

@@ -1,10 +1,12 @@
-﻿using RPG.Api.Domain.Models;
+﻿using AutoMapper;
+using RPG.Api.Domain.Models;
 using RPG.Api.Domain.Repositories;
 using RPG.Api.Domain.Repositories.Profile;
 using RPG.Api.Domain.Repositories.RForum;
 using RPG.Api.Domain.Repositories.RGame;
 using RPG.Api.Domain.Services.Communication;
 using RPG.Api.Domain.Services.SForum;
+using RPG.Api.Resources;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,8 +23,9 @@ namespace RPG.Api.Services.SForum
         private readonly IGameRepository _gameRepository;
         private readonly INotificationRepository _notificationRepository;
         private readonly IUnitOfWork _unitOfWork;
+        private readonly IMapper _mapper;
 
-        public MessageForumService(IForumRepository forumRepository, ITopicRepository topicRepository, ITopicToPersonRepository topicToPersonRepository, IMessageForumRepository messageForumRepository, IGameRepository gameRepository, INotificationRepository notificationRepository, IUnitOfWork unitOfWork)
+        public MessageForumService(IForumRepository forumRepository, ITopicRepository topicRepository, ITopicToPersonRepository topicToPersonRepository, IMessageForumRepository messageForumRepository, IGameRepository gameRepository, INotificationRepository notificationRepository, IUnitOfWork unitOfWork, IMapper mapper)
         {
             _forumRepository = forumRepository;
             _topicRepository = topicRepository;
@@ -31,6 +34,7 @@ namespace RPG.Api.Services.SForum
             _gameRepository = gameRepository;
             _notificationRepository = notificationRepository;
             _unitOfWork = unitOfWork;
+            _mapper = mapper;
         }
 
         public async Task<MessageForumResponse> AddMessageAsync(MessageForum message)
@@ -59,9 +63,6 @@ namespace RPG.Api.Services.SForum
                     }
                 }
             }
-
-            int pages = toUpdateTopic.Messages.Count() / 10;
-            int modpages = toUpdateTopic.Messages.Count() % 10;
 
             var responseTopic = _topicRepository.EditTopic(toUpdateTopic);
             var responseForum = _forumRepository.EditForum(toUpdateForum);
@@ -114,12 +115,22 @@ namespace RPG.Api.Services.SForum
            return await _messageForumRepository.GetMessageAsync(messageId);
         }
 
-        public async Task<List<MessageForum>> GetMessageListAsync(int topicId, int page)
+        public async Task<MessageForumPaginatedResponse> GetMessageListAsync(int topicId, int pageNumber, int pageSize)
         {
-            if (page > 0)
-                return await _messageForumRepository.GetMessageListWithPageAsync(topicId, page);
-            return await _messageForumRepository.GetMessageListAsync(topicId);
+            var results = await _messageForumRepository.GetMessageListAsync(topicId, pageNumber, pageSize);
+            var resource = _mapper.Map<List<MessageForum>, List<MessageForumResource>>(results);
 
+            var countAll = await _messageForumRepository.CountMessagesAsync(topicId);
+
+            double temp = (double)countAll / (double)pageSize;
+            int maxPages = (int)Math.Ceiling(temp);
+
+            var previousPage = pageNumber < 2 ? null :
+                "?topicId" + topicId + "&pageNumber=" + (pageNumber - 1).ToString() + "&pageSize=" + pageSize.ToString();
+            var nextPage = pageNumber == maxPages ? null :
+                "?topicId" + topicId + "&pageNumber=" + (pageNumber + 1).ToString() + "&pageSize=" + pageSize.ToString();
+
+            return new MessageForumPaginatedResponse(resource, countAll, maxPages, previousPage, nextPage);
         }
     }
 }

@@ -7,6 +7,8 @@ using RPG.Api.Persistence;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using RPG.Api.Domain.Services.SForum;
+using RPG.Api.Resources;
+using RPG.Api.Domain.Services.Communication;
 
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -22,16 +24,10 @@ namespace mdRPG.Controllers
             _messageForumService = messageForumService;
         }
 
-        [HttpGet("{id}/{page}")]
-        public async Task<List<MessageForum>> Get(int id, int page) // page == 0 => all pages, pages == -1, only one message
+        [HttpGet]
+        public async Task<MessageForumPaginatedResponse> Get([FromQuery] int topicId, int pageNumber, int pageSize) // page == 0 => all pages, pages == -1, only one message
         {
-            var msg = new List<MessageForum>();
-            if (page < 0)
-            {
-                msg.Add(await _messageForumService.GetMessageAsync(id));
-                return msg;
-            }
-            return await _messageForumService.GetMessageListAsync(id, page);
+            return await _messageForumService.GetMessageListAsync(topicId, pageNumber, pageSize);
         }
 
         [HttpPost]

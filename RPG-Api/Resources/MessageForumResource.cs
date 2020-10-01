@@ -13,6 +13,5 @@ namespace RPG.Api.Resources
         public string bodyMessage { get; set; }
         public int senderId { get; set; }
         public int topicId { get; set; }
-        public int pageNumber { get; set; }
     }
 }

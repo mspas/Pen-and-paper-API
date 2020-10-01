@@ -14,13 +14,11 @@ namespace RPG.Api.Resources
         public string category { get; set; }
         public int authorId { get; set; }
         public bool isPublic { get; set; }
-        public int messagesAmount { get; set; }
         public DateTime createDate { get; set; }
         public DateTime? lastActivityDate { get; set; }
         public int lastActivityUserId { get; set; }
+        public int messagesAmount { get; set; }
         public int totalPages { get; set; }
-        public Forum forum { get; set; }
-        public List<MessageForum> Messages { get; set; }
         public List<TopicToPerson> UsersConnected { get; set; }
     }
 }

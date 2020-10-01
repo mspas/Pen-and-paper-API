@@ -28,6 +28,7 @@ namespace mdRPG.Controllers
         [HttpGet("{id}/{pageSize}")]
         public async Task<ForumResource> Get(int id, int pageSize)
         {
+            Console.WriteLine("pages" + pageSize);
             return await _forumService.GetForumAsync(id, pageSize);
         }
 
