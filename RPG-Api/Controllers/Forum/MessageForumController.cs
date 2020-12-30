@@ -25,9 +25,9 @@ namespace mdRPG.Controllers
         }
 
         [HttpGet]
-        public async Task<MessageForumPaginatedResponse> Get([FromQuery] int topicId, int pageNumber, int pageSize) // page == 0 => all pages, pages == -1, only one message
+        public async Task<MessageForumPaginatedResponse> Get([FromQuery] int gameId, int topicId, int pageNumber, int pageSize) // page == 0 => all pages, pages == -1, only one message
         {
-            return await _messageForumService.GetMessageListAsync(topicId, pageNumber, pageSize);
+            return await _messageForumService.GetMessageListAsync(gameId, topicId, pageNumber, pageSize);
         }
 
         [HttpPost]

@@ -115,7 +115,7 @@ namespace RPG.Api.Services.SForum
            return await _messageForumRepository.GetMessageAsync(messageId);
         }
 
-        public async Task<MessageForumPaginatedResponse> GetMessageListAsync(int topicId, int pageNumber, int pageSize)
+        public async Task<MessageForumPaginatedResponse> GetMessageListAsync(int gameId, int topicId, int pageNumber, int pageSize)
         {
             var results = await _messageForumRepository.GetMessageListAsync(topicId, pageNumber, pageSize);
             var resource = _mapper.Map<List<MessageForum>, List<MessageForumResource>>(results);
@@ -126,9 +126,9 @@ namespace RPG.Api.Services.SForum
             int maxPages = (int)Math.Ceiling(temp);
 
             var previousPage = pageNumber < 2 ? null :
-                "?topicId" + topicId + "&pageNumber=" + (pageNumber - 1).ToString() + "&pageSize=" + pageSize.ToString();
+                "?gameId=" + gameId + "&topicId=" + topicId + "&pageNumber=" + (pageNumber - 1).ToString() + "&pageSize=" + pageSize.ToString();
             var nextPage = pageNumber == maxPages ? null :
-                "?topicId" + topicId + "&pageNumber=" + (pageNumber + 1).ToString() + "&pageSize=" + pageSize.ToString();
+                "?gameId=" + gameId + "&topicId=" + topicId + "&pageNumber=" + (pageNumber + 1).ToString() + "&pageSize=" + pageSize.ToString();
 
             return new MessageForumPaginatedResponse(resource, countAll, maxPages, previousPage, nextPage);
         }

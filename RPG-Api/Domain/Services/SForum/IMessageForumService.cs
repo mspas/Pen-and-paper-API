@@ -11,7 +11,7 @@ namespace RPG.Api.Domain.Services.SForum
     public interface IMessageForumService
     {
         Task<MessageForum> GetMessageAsync(int messageId);
-        Task<MessageForumPaginatedResponse> GetMessageListAsync(int topicId, int pageNumber, int pageSize);
+        Task<MessageForumPaginatedResponse> GetMessageListAsync(int gameId, int topicId, int pageNumber, int pageSize);
         Task<MessageForumResponse> AddMessageAsync(MessageForum message);
         Task<MessageForumResponse> EditMessageAsync(MessageForum message);
         Task<BaseResponse> DeleteMessageAsync(int messageId);
