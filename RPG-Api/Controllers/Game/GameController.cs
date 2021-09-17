@@ -53,21 +53,22 @@ namespace RPG.Api.Domain.Controllers
         }
 
         [HttpGet("search")]
-        public async Task<SearchGameResponse> Search([FromQuery] SearchGameParameters searchParameters)
+        public async Task<SearchGameResponse> Search([FromQuery] string title, string categories, bool showOnlyAvailable, int pageNumber, int pageSize)
         {
-            if (searchParameters.title == null)
-                searchParameters.title = "";
-            if (searchParameters.categoriesPattern == null)
-                searchParameters.categories = new string[] { "Fantasy", "SciFi", "Mafia", "Cyberpunk", "Steampunk", "PostApo", "Zombie", "AltHistory", "Other" };
-            else
-                searchParameters.categories = searchParameters.categoriesPattern.Split(".");
+            string[] selectedCategories;
+            title = title ?? "";
 
-            var searchResults = await _gameService.FindGamesAsync(searchParameters);
+            if (categories.Length > 6) 
+             selectedCategories = categories.Substring(2, categories.Length - 4).Split(new string[] { "\",\"" }, StringSplitOptions.None);
+            else 
+                selectedCategories = new string[] { "Fantasy", "SciFi", "Mafia", "Cyberpunk", "Steampunk", "PostApo", "Zombie", "AltHistory", "Other" };
+
+            var searchResults = await _gameService.FindGamesAsync(title, selectedCategories, showOnlyAvailable, pageNumber, pageSize);
             return searchResults;
         }
 
         // POST api/<controller>
-
+         
         [HttpPost]
         public async Task<IActionResult> Post([FromBody]Game game)
         {

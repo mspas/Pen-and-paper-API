@@ -75,10 +75,10 @@ namespace RPG.Api.Services.SGame
             throw new NotImplementedException();
         }
 
-        public async Task<SearchGameResponse> FindGamesAsync(SearchGameParameters searchParameters)
+        public async Task<SearchGameResponse> FindGamesAsync(string title, string[] categories, bool showOnlyAvailable, int pageNumber, int pageSize)
         {
-            var foundGames = await _gameRepository.FindGamesAsync(searchParameters);
-            var countAll = await _gameRepository.CountGamesAsync(searchParameters);
+            var foundGames = await _gameRepository.FindGamesAsync(title, categories, showOnlyAvailable, pageNumber, pageSize);
+            var countAll = await _gameRepository.CountGamesAsync(title, categories, showOnlyAvailable, pageNumber, pageSize);
 
             var gamesListResource = _mapper.Map<List<Game>, List<GameResource>>(foundGames);
 
@@ -96,15 +96,15 @@ namespace RPG.Api.Services.SGame
                 g.participantsProfiles = participantsProfiles;
             }
 
-            double temp = (double)countAll / (double)searchParameters.pageSize;
+            double temp = (double)countAll / (double)pageSize;
             int maxPages = (int) Math.Ceiling(temp);
 
-            var urlBaseParameters = "&pageSize=" + searchParameters.pageSize.ToString() + "&title=" + searchParameters.title + "&categoriesPattern=" + searchParameters.categoriesPattern + "&isAvaliable=" + searchParameters.isAvaliable.ToString();
+            var urlBaseParameters = "&title=" + title + "&categories=%5B\"" + string.Join("\",\"", categories) + "\"%5D&showOnlyAvailable=" + showOnlyAvailable.ToString() + "&pageSize = " + pageSize.ToString();
 
-            var previousPage = searchParameters.pageNumber < 2 ? null :
-                "?pageNumber=" + (searchParameters.pageNumber - 1).ToString() + urlBaseParameters;
-            var nextPage = searchParameters.pageNumber == maxPages ? null :
-                "?pageNumber=" + (searchParameters.pageNumber + 1).ToString() + urlBaseParameters;
+            var previousPage = pageNumber < 2 ? null :
+                "?pageNumber=" + (pageNumber - 1).ToString() + urlBaseParameters;
+            var nextPage = pageNumber == maxPages ? null :
+                "?pageNumber=" + (pageNumber + 1).ToString() + urlBaseParameters;
 
             return new SearchGameResponse(gamesListResource, countAll, maxPages, previousPage, nextPage);
         }

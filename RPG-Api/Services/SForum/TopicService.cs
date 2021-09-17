@@ -31,7 +31,7 @@ namespace RPG.Api.Services.SForum
 
         public async Task<TopicResponse> AddTopicAsync(Topic topic, string bodyMessage)
         {
-            var message = new MessageForum(topic.createDate, bodyMessage, topic.authorId, 1);
+            var message = new MessageForum(topic.createDate, bodyMessage, topic.authorId);
 
             var game = await _gameRepository.GetGameAsync(topic.forumId);
 

@@ -37,9 +37,9 @@ namespace mdRPG.Controllers
 
             if (response.Success)
             {
-                return Ok(response.MessageForum);
+                return Ok(response);
             }
-            return NotFound(response.Message);
+            return NotFound(response);
         }
 
         [HttpPut("{id}")]

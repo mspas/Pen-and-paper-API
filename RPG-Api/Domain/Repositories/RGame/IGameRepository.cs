@@ -12,8 +12,8 @@ namespace RPG.Api.Domain.Repositories.RGame
         Task<Game> GetGameAsync(int gameId);
         Task<Game> GetGameSnapAsync(int gameId);
         Task<List<Game>> GetGameListAsync();
-        Task<List<Game>> FindGamesAsync(SearchGameParameters searchParameters);
-        Task<int> CountGamesAsync(SearchGameParameters searchParameters);
+        Task<List<Game>> FindGamesAsync(string title, string[] categories, bool showOnlyAvailable, int pageNumber, int pageSize);
+        Task<int> CountGamesAsync(string title, string[] categories, bool showOnlyAvailable, int pageNumber, int pageSize);
         Task<GameResponse> AddGameAsync(Game game);
         GameResponse EditGame(Game game);
         BaseResponse DeleteGame(Game game);

@@ -106,6 +106,8 @@ namespace RPG.Api
             
             services.AddScoped<DbRepository>();
 
+            services.AddSignalR();
+
             var signingConfigurations = new SigningConfigurations();
             services.AddSingleton(signingConfigurations);
 

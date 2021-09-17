@@ -42,48 +42,53 @@ namespace RPG.Api.Persistence.Repositories.RGame
                                     .FirstAsync(mbox => mbox.Id == gameId);
         }
 
-        public async Task<List<Game>> FindGamesAsync(SearchGameParameters searchParameters)
+        public async Task<List<Game>> FindGamesAsync(string title, string[] categories, bool showOnlyAvailable, int pageNumber, int pageSize)
         {
             List<Game> results;
 
-            if (searchParameters.isAvaliable)
+            Console.WriteLine(title, categories[0], showOnlyAvailable, pageNumber, pageSize);
+
+            if (showOnlyAvailable)
             {
-                results = await _context.Games.Where(p => (p.title.StartsWith(searchParameters.title)) &&
-                                                          (searchParameters.categories.Contains(p.category)) &&
-                                                          (p.status == "Active" || (p.status == "Ongoing" && p.hotJoin == true)) &&
-                                                          (p.maxplayers - p.nofparticipants > 0))
-                                                  .OrderBy(p => p.title)
-                                                  .Skip((searchParameters.pageNumber - 1) * searchParameters.pageSize)
-                                                  .Take(searchParameters.pageSize).ToListAsync();
+                results = await _context.Games.Include(p => p.gameMaster)
+                    .Include(p => p.participants)
+                    .Where(p => (p.title.StartsWith(title)) &&
+                            (categories.Contains(p.category)) &&
+                            (p.status == "Active" || (p.status == "Ongoing" && p.hotJoin == true)) &&
+                            (p.maxplayers - p.nofparticipants > 0))
+                    .OrderBy(p => p.title)
+                    .Skip((pageNumber - 1) * pageSize)
+                    .Take(pageSize).ToListAsync();
             }
             else
             {
-                results = await _context.Games.Where(p => (p.title.StartsWith(searchParameters.title)) &&
-                                                          (searchParameters.categories.Contains(p.category)))
-                                                  .OrderBy(p => p.title)
-                                                  .Skip((searchParameters.pageNumber - 1) * searchParameters.pageSize)
-                                                  .Take(searchParameters.pageSize).ToListAsync();
+                results = await _context.Games.Include(p => p.gameMaster)
+                    .Include(p => p.participants)
+                    .Where(p => (p.title.StartsWith(title)) && (categories.Contains(p.category)))
+                    .OrderBy(p => p.title)
+                    .Skip((pageNumber - 1) * pageSize)
+                    .Take(pageSize).ToListAsync();
             }
 
             return results;
         }
 
-        public async Task<int> CountGamesAsync(SearchGameParameters searchParameters)
+        public async Task<int> CountGamesAsync(string title, string[] categories, bool showOnlyAvailable, int pageNumber, int pageSize)
         {
             int count = 0;
 
-            if (searchParameters.isAvaliable)
+            if (showOnlyAvailable)
             {
-                count = await _context.Games.Where(p => (p.title.StartsWith(searchParameters.title)) &&
-                                                  (searchParameters.categories.Contains(p.category)) &&
+                count = await _context.Games.Where(p => (p.title.StartsWith(title)) &&
+                                                  (categories.Contains(p.category)) &&
                                                   (p.status == "Active" || (p.status == "Ongoing" && p.hotJoin == true)) &&
                                                   (p.maxplayers - p.nofparticipants > 0))
                                             .CountAsync();
             }
             else
             {
-                count = await _context.Games.Where(p => (p.title.StartsWith(searchParameters.title)) &&
-                                                  (searchParameters.categories.Contains(p.category)))
+                count = await _context.Games.Where(p => (p.title.StartsWith(title)) &&
+                                                  (categories.Contains(p.category)))
                                             .CountAsync();
             }
 
