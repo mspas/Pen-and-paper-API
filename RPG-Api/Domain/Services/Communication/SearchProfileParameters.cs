@@ -12,11 +12,15 @@ namespace RPG.Api.Domain.Services.Communication
         {
         }
 
-        public SearchProfileParameters(int pageNumber, int pageSize, string name) : base(pageNumber, pageSize)
+        public SearchProfileParameters(int pageNumber, int pageSize, string login, string firstName, string lastName) : base(pageNumber, pageSize)
         {
-            this.name = name;
+            this.login = login;
+            this.firstName = firstName;
+            this.lastName = lastName;
         }
 
-        public string name { get; set;  }
+        public string login { get; set;  }
+        public string firstName { get; set; }
+        public string lastName { get; set; }
     }
 }

@@ -41,7 +41,13 @@ namespace mdRPG.Controllers
         [HttpGet("search")]
         public async Task<SearchProfileResponse> Search([FromQuery] SearchProfileParameters searchParameters)
         {
-            if (searchParameters.name == null) searchParameters.name = "";
+            if (searchParameters == null)
+                return null;
+
+            searchParameters.login = searchParameters.login ?? "";
+            searchParameters.firstName = searchParameters.firstName ?? "";
+            searchParameters.lastName = searchParameters.lastName ?? "";
+
             var result = await _personalDataService.FindProfilesAsync(searchParameters);
             return result;
         }

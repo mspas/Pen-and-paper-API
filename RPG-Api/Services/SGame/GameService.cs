@@ -23,6 +23,7 @@ namespace RPG.Api.Services.SGame
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
         private readonly IPersonalDataService _personalDataService;
+        private const string emptyArrayInUrlMarkup = "%5B%5D";
 
         public GameService(IGameRepository gameRepository, IGameToPersonRepository gameToPersonRepository, IForumRepository forumRepository, IUnitOfWork unitOfWork, IMapper mapper, IPersonalDataService personalDataService)
         {
@@ -75,10 +76,22 @@ namespace RPG.Api.Services.SGame
             throw new NotImplementedException();
         }
 
-        public async Task<SearchGameResponse> FindGamesAsync(string title, string[] categories, bool showOnlyAvailable, int pageNumber, int pageSize)
+        private string PrepareNewURL(SearchGameParameters searchParameters, int maxPages, int pageDifference)
         {
-            var foundGames = await _gameRepository.FindGamesAsync(title, categories, showOnlyAvailable, pageNumber, pageSize);
-            var countAll = await _gameRepository.CountGamesAsync(title, categories, showOnlyAvailable, pageNumber, pageSize);
+            if (searchParameters.pageNumber + pageDifference < 2 || searchParameters.pageNumber > maxPages - 1)
+                return null;
+
+            var categoriesString = searchParameters.selectedCategories.Length > emptyArrayInUrlMarkup.Length
+            ? "%5B\"" + string.Join("\",\"", searchParameters.categories) + "\"%5D" : emptyArrayInUrlMarkup;
+
+            return "?title=" + searchParameters.title + "&selectedCategories=" + categoriesString + "&showOnlyAvailable=" + searchParameters.showOnlyAvailable.ToString() 
+                + "&pageSize=" + searchParameters.pageSize.ToString() + "&pageNumber=" + (searchParameters.pageNumber + pageDifference).ToString();
+        }
+
+        public async Task<SearchGameResponse> FindGamesAsync(SearchGameParameters searchParameters)
+        {
+            var foundGames = await _gameRepository.FindGamesAsync(searchParameters);
+            var countAll = await _gameRepository.CountGamesAsync(searchParameters);
 
             var gamesListResource = _mapper.Map<List<Game>, List<GameResource>>(foundGames);
 
@@ -96,17 +109,10 @@ namespace RPG.Api.Services.SGame
                 g.participantsProfiles = participantsProfiles;
             }
 
-            double temp = (double)countAll / (double)pageSize;
+            double temp = (double)countAll / (double)searchParameters.pageSize;
             int maxPages = (int) Math.Ceiling(temp);
 
-            var urlBaseParameters = "&title=" + title + "&categories=%5B\"" + string.Join("\",\"", categories) + "\"%5D&showOnlyAvailable=" + showOnlyAvailable.ToString() + "&pageSize = " + pageSize.ToString();
-
-            var previousPage = pageNumber < 2 ? null :
-                "?pageNumber=" + (pageNumber - 1).ToString() + urlBaseParameters;
-            var nextPage = pageNumber == maxPages ? null :
-                "?pageNumber=" + (pageNumber + 1).ToString() + urlBaseParameters;
-
-            return new SearchGameResponse(gamesListResource, countAll, maxPages, previousPage, nextPage);
+            return new SearchGameResponse(gamesListResource, countAll, maxPages, PrepareNewURL(searchParameters, maxPages, -1), PrepareNewURL(searchParameters, maxPages, 1));
         }
 
 

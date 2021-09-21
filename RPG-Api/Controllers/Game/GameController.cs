@@ -23,6 +23,7 @@ namespace RPG.Api.Domain.Controllers
         private readonly IGameService _gameService;
         private readonly IPersonalDataService _personalDataService;
         private readonly IMapper _mapper;
+        private const string emptyArrayInUrlMarkup = "%5B%5D";
 
         public GameController(IGameService gameService, IPersonalDataService personalDataService, IMapper mapper)
         {
@@ -53,17 +54,19 @@ namespace RPG.Api.Domain.Controllers
         }
 
         [HttpGet("search")]
-        public async Task<SearchGameResponse> Search([FromQuery] string title, string categories, bool showOnlyAvailable, int pageNumber, int pageSize)
+        public async Task<SearchGameResponse> Search([FromQuery] SearchGameParameters searchParameters)
         {
-            string[] selectedCategories;
-            title = title ?? "";
+            if (searchParameters == null)
+                return null;
 
-            if (categories.Length > 6) 
-             selectedCategories = categories.Substring(2, categories.Length - 4).Split(new string[] { "\",\"" }, StringSplitOptions.None);
-            else 
-                selectedCategories = new string[] { "Fantasy", "SciFi", "Mafia", "Cyberpunk", "Steampunk", "PostApo", "Zombie", "AltHistory", "Other" };
+            searchParameters.title = searchParameters.title ?? "";
 
-            var searchResults = await _gameService.FindGamesAsync(title, selectedCategories, showOnlyAvailable, pageNumber, pageSize);
+            if (searchParameters.selectedCategories.Length > emptyArrayInUrlMarkup.Length)
+                searchParameters.categories = searchParameters.selectedCategories.Substring(2, searchParameters.selectedCategories.Length - 4).Split(new string[] { "\",\"" }, StringSplitOptions.None);
+            else
+                searchParameters.categories = new string[] { "Fantasy", "SciFi", "Mafia", "Cyberpunk", "Steampunk", "PostApo", "Zombie", "AltHistory", "Other" };
+
+            var searchResults = await _gameService.FindGamesAsync(searchParameters);
             return searchResults;
         }
 
