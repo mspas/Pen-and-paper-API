@@ -61,9 +61,9 @@ namespace mdRPG.Controllers
             var response = await _friendService.AddFriendAsync(friend);
             if (response.Success)
             {
-                return Ok(response.Friend);
+                return Ok(response);
             }
-            return NoContent();
+            return NotFound(response);
         }
 
         // PUT api/<controller>/5
@@ -73,9 +73,9 @@ namespace mdRPG.Controllers
             var response = await _friendService.EditFriendAsync(friend);
             if (response.Success)
             {
-                return Ok(response.Friend.Id);
+                return Ok(response);
             }
-            return NoContent();
+            return NotFound(response);
         }
 
          // DELETE api/<controller>/5
@@ -85,9 +85,9 @@ namespace mdRPG.Controllers
             var response = await _friendService.DeleteFriendAsync(id);
             if (response.Success)
             {
-                return Ok(true);
+                return Ok(response);
             }
-            return NoContent();
+            return NotFound(response);
         }
     }
 }

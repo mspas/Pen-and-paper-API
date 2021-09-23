@@ -27,10 +27,10 @@ namespace RPG.Api.Persistence.Repositories.RGame
             return new BaseResponse(true, null);
         }
 
-        public GameResponse EditGame(Game game)
+        public GameResponse EditGame(Game toUpdate)
         {
-            _context.Games.Update(game);
-            return new GameResponse(true, null, game);
+            _context.Games.Update(toUpdate);
+            return new GameResponse(true, null, toUpdate);
         }
 
         public async Task<Game> GetGameAsync(int gameId)

@@ -15,7 +15,7 @@ namespace RPG.Api.Domain.Repositories.RGame
         Task<List<Game>> FindGamesAsync(SearchGameParameters searchParameters);
         Task<int> CountGamesAsync(SearchGameParameters searchParameters);
         Task<GameResponse> AddGameAsync(Game game);
-        GameResponse EditGame(Game game);
+        GameResponse EditGame(Game toUpdate);
         BaseResponse DeleteGame(Game game);
     }
 }

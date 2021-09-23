@@ -44,9 +44,9 @@ public class GameToPersonController : Controller
             var response = await _gameToPersonService.AddG2PAsync(g2p);
             if (response.Success)
             {
-                return Ok(response.GameToPerson);
+                return Ok(response);
             }
-            return NotFound(response.Message);
+            return NotFound(response);
         }
 
     // PUT api/<controller>/5
@@ -56,9 +56,9 @@ public class GameToPersonController : Controller
             var response = await _gameToPersonService.EditG2PAsync(g2p);
             if (response.Success)
             {
-                return Ok(response.GameToPerson);
+                return Ok(response);
             }
-            return NotFound(response.Message);
+            return NotFound(response);
         }
 
     // DELETE api/<controller>/5
@@ -68,9 +68,9 @@ public class GameToPersonController : Controller
             var response = await _gameToPersonService.DeleteG2PAsync(id);
             if (response.Success)
             {
-                return Ok(response.Success);
+                return Ok(response);
             }
-            return NotFound();
+            return NotFound(response);
         }
     }
 }

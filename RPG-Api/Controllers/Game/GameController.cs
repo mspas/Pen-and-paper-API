@@ -78,21 +78,21 @@ namespace RPG.Api.Domain.Controllers
             var response = await _gameService.AddGameAsync(game);
             if (response.Success)
             {
-                return Ok(response.Game.Id);
+                return Ok(response);
             }
-            return NotFound();
+            return NotFound(response);
         }
 
         // PUT api/<controller>/5
         [HttpPut("{id}")]
         public async Task<IActionResult> Put(int id, [FromBody]Game game)
         {
-            var response = await _gameService.EditGameAsync(game);
+            var response = await _gameService.EditGameAsync(id, game);
             if (response.Success)
             {
-                return Ok(response.Game.Id);
+                return Ok(response);
             }
-            return NoContent();
+            return NotFound(response);
         }
 
         // DELETE api/<controller>/5
@@ -102,9 +102,9 @@ namespace RPG.Api.Domain.Controllers
             var response = await _gameService.DeleteGameAsync(id);
             if (response.Success)
             {
-                return Ok(response.Success);
+                return Ok(response);
             }
-            return NoContent();
+            return NotFound(response);
         }
     }
 }

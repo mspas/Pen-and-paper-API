@@ -12,7 +12,7 @@ namespace RPG.Api.Domain.Services.SGame
         Task<Game> GetGameAsync(int gameId);
         Task<SearchGameResponse> FindGamesAsync(SearchGameParameters searchParameters);
         Task<GameResponse> AddGameAsync(Game game);
-        Task<GameResponse> EditGameAsync(Game game);
+        Task<GameResponse> EditGameAsync(int id, Game toUpdate);
         Task<BaseResponse> DeleteGameAsync(int gameId);
     }
 }

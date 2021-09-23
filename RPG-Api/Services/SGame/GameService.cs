@@ -71,9 +71,32 @@ namespace RPG.Api.Services.SGame
             return response;
         }
 
-        public Task<GameResponse> EditGameAsync(Game game)
+        public async Task<GameResponse> EditGameAsync(int id, Game toUpdate)
         {
-            throw new NotImplementedException();
+            var oldGame = await _gameRepository.GetGameAsync(id);
+            var gameToUpdate = UpdateDataGameAsync(toUpdate, oldGame);
+            var response = _gameRepository.EditGame(gameToUpdate);
+
+            await _unitOfWork.CompleteAsync();
+
+            return response;
+        }
+
+        private Game UpdateDataGameAsync(Game newData, Game gameToUpdate)
+        {
+            gameToUpdate.title = newData.title;
+            gameToUpdate.category = newData.category;
+            gameToUpdate.date = newData.date;
+            gameToUpdate.description = newData.description;
+            gameToUpdate.storyDescription = newData.storyDescription;
+            gameToUpdate.status = newData.status;
+            gameToUpdate.photoName = newData.photoName;
+            gameToUpdate.comment = newData.comment;
+            gameToUpdate.needInvite = newData.needInvite;
+            gameToUpdate.maxplayers = newData.maxplayers;
+            gameToUpdate.hotJoin = newData.hotJoin;
+
+            return gameToUpdate;
         }
 
         private string PrepareNewURL(SearchGameParameters searchParameters, int maxPages, int pageDifference)

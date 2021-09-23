@@ -38,34 +38,8 @@ namespace RPG.Api.Services.Profile
 
         public async Task<SearchProfileResponse> FindProfilesAsync(SearchProfileParameters searchParameters)
         {
-            //List<PersonalData> results = new List<PersonalData>();
-            //int countAll = 0;
             var results = await _personalDataRepository.FindProfilesAsync(searchParameters);
             int countAll = await _personalDataRepository.CountProfilesAsync(searchParameters);
-
-            /*if (searchParameters.login.Length > 0)
-            {
-                var resultsLogin = await _personalDataRepository.FindProfilesByLoginAsync(searchParameters);
-                countAll += await _personalDataRepository.CountProfilesByLoginAsync(searchParameters);
-
-                results = results.Union(resultsLogin).ToList();
-            }
-
-            if (searchParameters.firstName.Length > 0)
-            {
-                var resultsFirstName = await _personalDataRepository.FindProfilesByFirstNameAsync(searchParameters);
-                countAll += await _personalDataRepository.CountProfilesByFirstNameAsync(searchParameters);
-
-                results = results.Union(resultsFirstName).ToList();
-            }
-
-            if (searchParameters.lastName.Length > 0)
-            {
-                var resultsLastName = await _personalDataRepository.FindProfilesByLastNameAsync(searchParameters);
-                countAll += await _personalDataRepository.CountProfilesByLastNameAsync(searchParameters);
-
-                results = results.Union(resultsLastName).ToList();
-            }*/
 
             var profilesListResource = _mapper.Map<List<PersonalData>, List<PersonalDataResource>>(results);
 
