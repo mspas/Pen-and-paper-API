@@ -28,10 +28,10 @@ namespace RPG_Api.Controllers
 
 
         // GET api/<controller>/5 but its a id of relation person-person 
-        [HttpGet("{id}")]
-        public async Task<List<Message>> Get(int id)
+        [HttpGet("{relationId}")]
+        public async Task<List<Message>> Get(int relationId)
         {
-            return await _messageService.GetMessageListAsync(id);
+            return await _messageService.GetMessageListAsync(relationId);
         }
 
         [HttpPost]
@@ -39,8 +39,8 @@ namespace RPG_Api.Controllers
         {
             var response = await _messageService.AddMessageAsync(message);
             if (response.Success)
-                return Ok(response.Message);
-            return NoContent();
+                return Ok(response);
+            return NotFound(response);
         }
 
         [HttpPut("{id}")]
@@ -48,8 +48,8 @@ namespace RPG_Api.Controllers
         {
             var response = await _messageService.EditMessageAsync(id);
             if (response.Success)
-                return Ok(response.Message);
-            return NoContent();
+                return Ok(response);
+            return NotFound(response);
         }
 
         [HttpDelete("{id}")]
@@ -57,8 +57,8 @@ namespace RPG_Api.Controllers
         {
             var response = await _messageService.DeleteMessageAsync(id);
             if (response.Success)
-                return Ok();
-            return NoContent();
+                return Ok(response);
+            return NotFound(response);
         }
     }
 }

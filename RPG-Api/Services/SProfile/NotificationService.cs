@@ -21,9 +21,9 @@ namespace RPG.Api.Services.Profile
             _unitOfWork = unitOfWork;
         }
 
-        public async Task<NotificationData> GetNotificationDataAsync(int messageId)
+        public async Task<NotificationData> GetNotificationDataAsync(int userId)
         {
-            return await _notificationRepository.GetNotificationDataAsync(messageId);
+            return await _notificationRepository.GetNotificationDataAsync(userId);
         }
 
         public async Task<BaseResponse> UpdateNotificationDataAsync(int id, NotificationData notificationData)

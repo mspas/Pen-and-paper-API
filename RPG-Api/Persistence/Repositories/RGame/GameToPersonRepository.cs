@@ -37,6 +37,7 @@ namespace RPG.Api.Persistence.Repositories.RGame
         public async Task<GameToPerson> GetG2PAsync(int g2pId)
         {
             return await _context.GamesToPerson.Include(p => p.game)
+                                    .Include(p => p.game.participants)
                                     .Include(p => p.player)
                                     .Include(p => p.characterSkills)
                                     .FirstAsync(mbox => mbox.Id == g2pId);
@@ -44,7 +45,7 @@ namespace RPG.Api.Persistence.Repositories.RGame
 
         public async Task<List<GameToPerson>> GetG2PListAsync(int userId)
         {
-            return await _context.GamesToPerson
+            return await _context.GamesToPerson.Include(p => p.game)
                                     .Include(p => p.characterSkills)
                                     .Where(mbox => mbox.playerId == userId)
                                     .ToListAsync();

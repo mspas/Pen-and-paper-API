@@ -87,14 +87,14 @@ namespace RPG.Api.Services.SGame
         {
             var profile = await _personalDataRepository.GetProfileByName(login);
             var g2pList = await _gameToPersonRepository.GetG2PListAsync(profile.Id);
-            for(int i = 0; i < g2pList.Count; i++)
+            /*for(int i = 0; i < g2pList.Count; i++)
             {
                 var game = await _gameRepository.GetGameSnapAsync(g2pList[i].gameId);
                 game.gameMaster.NotificationData = null;
                 game.participants = null;
                 g2pList[i].game = game;
                 g2pList[i].player = null;
-            }
+            }*/
             return g2pList;
         }
     }

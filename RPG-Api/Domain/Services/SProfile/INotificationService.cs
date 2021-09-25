@@ -9,7 +9,7 @@ namespace RPG.Api.Domain.Services.Profile
 {
     public interface INotificationService
     {
-        Task<NotificationData> GetNotificationDataAsync(int messageId);
+        Task<NotificationData> GetNotificationDataAsync(int userId);
         Task<BaseResponse> UpdateNotificationDataAsync(int id, NotificationData notificationData);
     }
 }
