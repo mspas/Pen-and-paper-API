@@ -59,12 +59,9 @@ namespace mdRPG.Controllers
             var response = await _personalDataService.EditProfileDataAsync(id, profile);
             if (response.Success)
             {
-                return Ok();
+                return Ok(response);
             }
-            else
-            {
-                return NotFound(response.Message);
-            }
+            return NotFound(response);
         }
 
         // DELETE api/<controller>/5

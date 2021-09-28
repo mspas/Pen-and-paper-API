@@ -66,5 +66,24 @@ namespace RPG.Api.Services.Profile
 
             return notification;
         }
+
+
+        public async Task<BaseResponse> ChangePasswordAsync(int id, ChangePassword passwordData)
+        {
+            var toUpdate = _accountRepository.FindByIdAsync(id);
+            if (toUpdate == null)
+            {
+                return new BaseResponse(false, "Account not found");
+            }
+
+            if (!_passwordHasher.PasswordMatches(passwordData.oldpass, toUpdate.password))
+            {
+                return new BaseResponse(false, "Current password invalid!");
+            }
+
+            toUpdate.password = _passwordHasher.HashPassword(passwordData.newpass); 
+
+            return await _accountRepository.EditPasswordAsync(toUpdate);
+        }
     }
 }

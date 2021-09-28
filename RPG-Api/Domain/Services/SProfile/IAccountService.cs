@@ -12,5 +12,6 @@ namespace RPG.Api.Domain.Services.Profile
     {
         Task<CreateAccountResponse> CreateUserAsync(Account user, params ERole[] userRoles);
         Account FindByLoginAsync(string login);
+        Task<BaseResponse> ChangePasswordAsync(int id, ChangePassword passwordData);
     }
 }

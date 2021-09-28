@@ -2,8 +2,6 @@
 using AutoMapper;
 using RPG.Api.Resources;
 using RPG.Api.Domain.Models;
-using RPG.Api.Persistence;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -12,38 +10,20 @@ using System.Linq;
 using System.Threading.Tasks;
 using RPG.Api.Domain.Services.Profile;
 using RPG.Api.Domain.Models.Enums;
+using RPG.Api.Domain.Services.Communication;
 
 namespace mdRPG.Controllers
 {
     public class AccountController : Controller
     {
-        private readonly RpgDbContext context;
         private readonly IMapper _mapper;
         private readonly IAccountService _accountService;
 
-        public AccountController(RpgDbContext context, IMapper mapper, IAccountService accountService)
+        public AccountController(IMapper mapper, IAccountService accountService)
         {
-            this.context = context;
             _mapper = mapper;
             _accountService = accountService;
         }
-
-
-        /* [HttpGet("/api/account")]
-         public List<AccountResource> GetAccounts()
-         {
-             var acc = context.Accounts.Include(mbox => mbox.PersonalData).ToList();
-             return mapper.Map<List<Account>, List<AccountResource>>(acc);
-         }*/
-
-        /*[HttpPost("/api/account")]
-        public async Task<IActionResult> CreateAccount([FromBody] Account account)
-        {
-            account.PersonalData.photoName = "unknown.png";       
-            context.Accounts.Add(account);
-            await context.SaveChangesAsync();
-            return Ok(account);
-        }*/
 
         [HttpPost("/api/account")]
         public async Task<IActionResult> CreateAccount([FromBody] AccountCredentialsResource accountCredentials)
@@ -59,32 +39,23 @@ namespace mdRPG.Controllers
 
             if (!response.Success)
             {
-                return BadRequest(response.Message);
+                return BadRequest(response);
             }
 
-            var accountResponse = _mapper.Map<Account, AccountResource>(response.Account);
-            return Ok(accountResponse);
+            var accountResource = _mapper.Map<Account, AccountResource>(response.Account);
+            return Ok(new CreateAccountResponse2(response.Success, response.Message, accountResource));
         }
 
         [HttpPut("/api/account/{id}")]
         public async Task<IActionResult> Put(int id, [FromBody] ChangePassword passwordData)
         {
-            var toUpdate = context.Accounts.Find(id);
-            if (toUpdate == null)
+            var response = await _accountService.ChangePasswordAsync(id, passwordData);
+
+            if (!response.Success)
             {
-                return NotFound();
+                return BadRequest(response);
             }
-
-            if (passwordData.oldpass != toUpdate.password)
-            { 
-                return NotFound();
-            }
-
-            toUpdate.password = passwordData.newpass;
-
-            context.Accounts.Update(toUpdate);
-            await context.SaveChangesAsync();
-            return NoContent();
+            return Ok(response);
         }
     }
 }

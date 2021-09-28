@@ -2,6 +2,7 @@
 using RPG.Api.Domain.Models;
 using RPG.Api.Domain.Models.Enums;
 using RPG.Api.Domain.Repositories.Profile;
+using RPG.Api.Domain.Services.Communication;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -35,6 +36,20 @@ namespace RPG.Api.Persistence.Repositories.Profile
             return _context.Accounts.Include(u => u.UserRoles)
                                        .ThenInclude(ur => ur.Role)
                                        .SingleOrDefault(u => u.login == login);
+        }
+
+        public Account FindByIdAsync(int id)
+        {
+            return _context.Accounts.Include(u => u.UserRoles)
+                                       .ThenInclude(ur => ur.Role)
+                                       .SingleOrDefault(u => u.Id == id);
+        }
+
+        public async Task<BaseResponse> EditPasswordAsync(Account account)
+        {
+            _context.Accounts.Update(account);
+            await _context.SaveChangesAsync();
+            return new BaseResponse(true, "Success!");
         }
     }
 }

@@ -7,6 +7,10 @@ namespace RPG.Api.Domain.Models
 {
     public class ChangePassword
     {
+        public ChangePassword()
+        {
+        }
+
         public string oldpass { get; set; }
         public string newpass { get; set; }
     }
