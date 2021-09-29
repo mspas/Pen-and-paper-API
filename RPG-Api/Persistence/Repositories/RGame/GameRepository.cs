@@ -36,6 +36,7 @@ namespace RPG.Api.Persistence.Repositories.RGame
         public async Task<Game> GetGameAsync(int gameId)
         {
             return await _context.Games.Include(p => p.gameMaster)
+                                    .Include(p => p.forum)
                                     .Include(p => p.participants)
                                     .Include(p => p.skillSetting)
                                     .Include(p => p.sessions)
@@ -53,7 +54,7 @@ namespace RPG.Api.Persistence.Repositories.RGame
                     .Where(p => (p.title.StartsWith(searchParameters.title)) &&
                             (searchParameters.categories.Contains(p.category)) &&
                             (p.status == "Active" || (p.status == "Ongoing" && p.hotJoin == true)) &&
-                            (p.maxplayers - p.nofparticipants > 0))
+                            (p.maxplayers - p.participants.Count > 0))
                     .OrderBy(p => p.title)
                     .Skip((searchParameters.pageNumber - 1) * searchParameters.pageSize)
                     .Take(searchParameters.pageSize).ToListAsync();
@@ -80,7 +81,7 @@ namespace RPG.Api.Persistence.Repositories.RGame
                 count = await _context.Games.Where(p => (p.title.StartsWith(searchParameters.title)) &&
                                                   (searchParameters.categories.Contains(p.category)) &&
                                                   (p.status == "Active" || (p.status == "Ongoing" && p.hotJoin == true)) &&
-                                                  (p.maxplayers - p.nofparticipants > 0))
+                                                  (p.maxplayers - p.participants.Count > 0))
                                             .CountAsync();
             }
             else

@@ -11,7 +11,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
 using RPG.Api.Domain.Repositories;
 using RPG.Api.Persistence.Repositories;
@@ -45,18 +45,22 @@ namespace RPG.Api
         
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddCors(options =>
+            /*services.AddCors(options =>
             {
-                options.AddPolicy("MyPolicy",
-                    builder => builder.AllowAnyOrigin()
-                        .AllowAnyMethod()
-                        .AllowAnyHeader()
-                        .AllowCredentials());
-            });
+                options.AddPolicy("MyPolicy", builder => builder
+                    .AllowAnyOrigin()
+                    .AllowAnyMethod()
+                    .AllowAnyHeader()
+                    .SetIsOriginAllowed((host) => true)
+                );
+            });*/
             services.AddAutoMapper();
-            services.AddMvc().AddJsonOptions(x => x.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
+            services.AddMvc(options => options.EnableEndpointRouting = false).AddNewtonsoftJson(x => x.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
             services.AddDbContext<RpgDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("Default")));
 
+            services.AddSpaStaticFiles(configuration => {
+                configuration.RootPath = "FrontEnd/dist";
+            });
 
             services.AddScoped<IAuthorizeService, AuthorizeService>();
             services.AddSingleton<IPasswordHasher, PasswordHasher>();
@@ -137,16 +141,36 @@ namespace RPG.Api
               });
         }
         
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            app.UseCors("MyPolicy");
+            //app.UseCors("MyPolicy");
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
             }
 
-            app.UseAuthentication();
-            app.UseMvc();
+            app.UseCors(builder => builder
+              .AllowAnyHeader()
+              .AllowAnyMethod()
+              .SetIsOriginAllowed((host) => true)
+              .AllowCredentials()
+             );
+
+            app.UseHttpsRedirection();
+            app.UseRouting();
+            app.UseAuthorization();
+
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapControllers();
+            });
+
+            app.UseSpaStaticFiles();
+            app.UseSpa(spa =>
+            {
+                spa.Options.SourcePath = "FrontEnd";
+            });
         }
     }
 }

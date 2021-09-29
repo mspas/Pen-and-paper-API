@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace mdRPG.Controllers
 {
-    [EnableCors("MyPolicy")]
+    //[EnableCors("MyPolicy")]
     public class AuthorizeController : Controller
     {
         private readonly IAuthorizeService _authorizeService;

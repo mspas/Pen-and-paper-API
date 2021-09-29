@@ -16,7 +16,7 @@ using RPG.Api.Domain.Services.Profile;
 
 namespace mdRPG.Controllers
 {
-    [EnableCors("MyPolicy")]
+    //[EnableCors("MyPolicy")]
     [Route("api/[controller]")]
     public class FriendController : Controller
     {

@@ -37,28 +37,31 @@ namespace RPG.Api.Services.SGame
 
         public async Task<GameResponse> AddGameAsync(Game game)
         {
+            /*var forumId = await _forumRepository.AddForumAsync(new Forum());
+            await _unitOfWork.CompleteAsync();
+
+            game.forumId = forumId;*/
+
             var gameResponse = await _gameRepository.AddGameAsync(game);
+            await _unitOfWork.CompleteAsync();
 
             var gameToPerson = new GameToPerson
             {
-                gameId = game.Id,
+                gameId = gameResponse.Game.Id,
                 playerId = game.masterId,
                 isGameMaster = true,
                 isAccepted = true,
                 isMadeByPlayer = true
             };
             var g2pResponse = await _gameToPersonRepository.AddG2PAsync(gameToPerson);
-
             await _unitOfWork.CompleteAsync();
 
-            await _forumRepository.AddForumAsync(new Forum());
-            await _unitOfWork.CompleteAsync();
 
-            if (gameResponse.Success && g2pResponse.Success)
+            if (!gameResponse.Success || !g2pResponse.Success)
             {
-                return gameResponse;
+                return new GameResponse(false, "Failed", null);
             }
-            return new GameResponse(false, "Failed", null);
+            return gameResponse;
         }
 
         public async Task<BaseResponse> DeleteGameAsync(int gameId)

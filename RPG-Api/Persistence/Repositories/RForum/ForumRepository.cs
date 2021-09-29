@@ -15,10 +15,10 @@ namespace RPG.Api.Persistence.Repositories.RForum
         {
         }
 
-        public async Task<BaseResponse> AddForumAsync(Forum forum)
+        public async Task<int> AddForumAsync(Forum forum)
         {
             await _context.Forums.AddAsync(forum);
-            return new BaseResponse(true, null);
+            return forum.Id;
         }
 
         public BaseResponse DeleteForum(Forum forum)

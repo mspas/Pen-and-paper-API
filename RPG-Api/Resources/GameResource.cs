@@ -34,7 +34,6 @@ namespace RPG.Api.Resources
         public int masterId { get; set; }
         public string title { get; set; }
         public string category { get; set; }
-        public int nofparticipants { get; set; }
         public int maxplayers { get; set; }
         public string description { get; set; }
         public string book { get; set; }
@@ -45,6 +44,7 @@ namespace RPG.Api.Resources
         public string status { get; set; }
         public string photoName { get; set; }
         public string bgPhotoName { get; set; }
+        public int forumId { get; set; }
         public DateTime? lastActivityDate { get; set; }
         public PersonalDataResource gameMaster { get; set; }
         public List<GameToPerson> participants { get; set; }

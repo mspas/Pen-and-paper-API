@@ -11,7 +11,7 @@ namespace RPG.Api.Domain.Repositories.RForum
     {
         Task<Forum> GetForumAsync(int gameId);
         Task<List<Forum>> GetForumListAsync();
-        Task<BaseResponse> AddForumAsync(Forum forum);
+        Task<int> AddForumAsync(Forum forum);
         BaseResponse EditForum(Forum forum);
         BaseResponse DeleteForum(Forum forum);
     }
