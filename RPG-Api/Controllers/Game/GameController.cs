@@ -37,6 +37,8 @@ namespace RPG.Api.Domain.Controllers
         public async Task<GameResource> Get(int id)
         {
             var game = await _gameService.GetGameAsync(id);
+            if (game == null) return null;
+
             var resource = _mapper.Map<Game, GameResource>(game);
 
             var participantsProfiles = new List<PersonalDataResource>();

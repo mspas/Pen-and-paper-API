@@ -40,7 +40,7 @@ namespace RPG.Api.Persistence.Repositories.RGame
                                     .Include(p => p.participants)
                                     .Include(p => p.skillSetting)
                                     .Include(p => p.sessions)
-                                    .FirstAsync(mbox => mbox.Id == gameId);
+                                    .SingleOrDefaultAsync(mbox => mbox.Id == gameId);
         }
 
         public async Task<List<Game>> FindGamesAsync(SearchGameParameters searchParameters)

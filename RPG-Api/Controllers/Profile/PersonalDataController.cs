@@ -38,15 +38,23 @@ namespace mdRPG.Controllers
             return resource;
         }
 
+        [HttpGet("id/{id}")]
+        public async Task<PersonalDataResource> GetById(int id)
+        {
+            var profile = await _personalDataService.GetProfileAsync(id);
+            var resource = _mapper.Map<PersonalData, PersonalDataResource>(profile);
+            return resource;
+        }
+
         [HttpGet("search")]
         public async Task<SearchProfileResponse> Search([FromQuery] SearchProfileParameters searchParameters)
         {
             if (searchParameters == null)
                 return null;
 
-            searchParameters.login = searchParameters.login ?? "";
-            searchParameters.firstName = searchParameters.firstName ?? "";
-            searchParameters.lastName = searchParameters.lastName ?? "";
+            searchParameters.login ??= "";
+            searchParameters.firstName ??= "";
+            searchParameters.lastName ??= "";
 
             var result = await _personalDataService.FindProfilesAsync(searchParameters);
             return result;

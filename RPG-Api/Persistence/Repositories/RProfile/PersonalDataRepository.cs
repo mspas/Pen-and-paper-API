@@ -28,14 +28,14 @@ namespace RPG.Api.Persistence.Repositories.Profile
         
         public async Task<PersonalData> GetProfileByName(string name)
         {
-            var account =  await _context.Accounts.Include(mbox => mbox.PersonalData).FirstAsync(mbox => mbox.PersonalData.login == name);
-            return account.PersonalData;
+            var account =  await _context.Accounts.Include(mbox => mbox.PersonalData).SingleOrDefaultAsync(mbox => mbox.PersonalData.login == name);
+            return account?.PersonalData;
         }
 
         public async Task<PersonalData> GetProfileById(int id)
         {
-            var account =  await _context.Accounts.Include(mbox => mbox.PersonalData).FirstAsync( mbox => mbox.Id == id);
-            return account.PersonalData;
+            var account =  await _context.Accounts.Include(mbox => mbox.PersonalData).SingleOrDefaultAsync( mbox => mbox.Id == id);
+            return account?.PersonalData;
         }
 
         public async Task<BaseResponse> UpdateProfile(PersonalData toUpdate)
