@@ -12,11 +12,13 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using RPG.Api.Domain.Services.Profile;
 using RPG.Api.Domain.Services.Communication;
+using Microsoft.AspNetCore.Authorization;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace RPG.Api.Domain.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     public class GameController : Controller
     {

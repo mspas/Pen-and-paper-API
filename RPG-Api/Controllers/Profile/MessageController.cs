@@ -9,9 +9,11 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using RPG.Api.Domain.Services.Profile;
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 
 namespace RPG_Api.Controllers
 {
+    [Authorize]
     [Produces("application/json")]
     [Route("api/Message")]
     public class MessageController : Controller

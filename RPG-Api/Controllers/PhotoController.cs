@@ -14,6 +14,7 @@ using System.Reflection;
 using System.Threading.Tasks;
 using RPG.Api.Domain.Services;
 using RPG.Api.Domain.Services.Communication;
+using Microsoft.AspNetCore.Authorization;
 
 namespace mdRPG.Controllers
 {
@@ -29,6 +30,7 @@ namespace mdRPG.Controllers
             _photoService = photoService;
         }
 
+        [Authorize]
         [HttpPost("/api/Photo/{type}/{isBgPhoto}/{id}")]
         public async Task<BaseResponse> Upload(int type, int id, bool isBgPhoto, IFormFile file)
         {
@@ -68,6 +70,7 @@ namespace mdRPG.Controllers
             }
         }
 
+        [Authorize]
         [HttpDelete("{profileOrGame}/{userId}/{fileName}")]
         public async Task<BaseResponse> DeleteFile(bool profileOrGame, int userId, string fileName)
         {

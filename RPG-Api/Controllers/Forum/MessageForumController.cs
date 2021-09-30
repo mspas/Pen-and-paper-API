@@ -9,11 +9,13 @@ using Microsoft.EntityFrameworkCore;
 using RPG.Api.Domain.Services.SForum;
 using RPG.Api.Resources;
 using RPG.Api.Domain.Services.Communication;
+using Microsoft.AspNetCore.Authorization;
 
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace mdRPG.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     public class MessageForumController : Controller
     {

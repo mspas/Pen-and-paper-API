@@ -7,14 +7,14 @@ namespace RPG.Api.Domain.Services.Security.Tokens
 {
     public class AccessToken : JsonWebToken
     {
-        public RefreshToken RefreshToken { get; private set; }
+        //public RefreshToken RefreshToken { get; private set; }
 
-        public AccessToken(string token, long expiration, RefreshToken refreshToken) : base(token, expiration)
+        public AccessToken(string token, long expiration) : base(token, expiration)
         {
-            if (refreshToken == null)
+            /*if (refreshToken == null)
                 throw new ArgumentException("Specify a valid refresh token.");
 
-            RefreshToken = refreshToken;
+            RefreshToken = refreshToken;*/
         }
     }
 }

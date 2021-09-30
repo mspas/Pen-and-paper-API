@@ -13,7 +13,7 @@ namespace RPG.Api.Services.Security.Tokens
 {
     public class TokenHandler : ITokenHandler
     {
-        private readonly ISet<RefreshToken> _refreshTokens = new HashSet<RefreshToken>();           //  TO DO ZROBIENIA JEST!!!
+        private readonly ISet<RefreshToken> _refreshTokens = new HashSet<RefreshToken>();           //  TO DO
 
         private readonly TokenOptions _tokenOptions;
         private readonly SigningConfigurations _signingConfigurations;
@@ -28,14 +28,14 @@ namespace RPG.Api.Services.Security.Tokens
 
         public AccessToken CreateAccessToken(Account account)
         {
-            var refreshToken = BuildRefreshToken(account);
-            var accessToken = BuildAccessToken(account, refreshToken);
-            _refreshTokens.Add(refreshToken);
+            //var refreshToken = BuildRefreshToken(account);
+            var accessToken = BuildAccessToken(account);
+            /*_refreshTokens.Add(refreshToken);
 
             foreach (RefreshToken refresh in _refreshTokens)
             {
                 Console.WriteLine("take ref " + refresh.Token);
-            }
+            }*/
 
             return accessToken;
         }
@@ -63,8 +63,6 @@ namespace RPG.Api.Services.Security.Tokens
 
 
 
-        // Inner methods
-
         private RefreshToken BuildRefreshToken(Account account)
         {
             var refreshToken = new RefreshToken
@@ -76,10 +74,11 @@ namespace RPG.Api.Services.Security.Tokens
             return refreshToken;
         }
 
-        private AccessToken BuildAccessToken(Account account, RefreshToken refreshToken)
+        private AccessToken BuildAccessToken(Account account)
         {
             var accessTokenExpiration = DateTime.UtcNow.AddSeconds(_tokenOptions.AccessTokenExpiration);
-            Console.WriteLine(accessTokenExpiration);
+
+            Console.WriteLine(_tokenOptions.Issuer, _tokenOptions.Audience);
 
             var securityToken = new JwtSecurityToken
             (
@@ -94,7 +93,7 @@ namespace RPG.Api.Services.Security.Tokens
             var handler = new JwtSecurityTokenHandler();
             var accessToken = handler.WriteToken(securityToken);
 
-            return new AccessToken(accessToken, accessTokenExpiration.Ticks, refreshToken);
+            return new AccessToken(accessToken, accessTokenExpiration.Ticks);
         }
 
         private IEnumerable<Claim> GetClaims(Account account)

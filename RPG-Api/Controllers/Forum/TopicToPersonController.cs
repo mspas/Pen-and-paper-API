@@ -8,11 +8,13 @@ using Microsoft.AspNetCore.Mvc;
 using RPG.Api.Domain.Services.SForum;
 using AutoMapper;
 using RPG.Api.Resources;
+using Microsoft.AspNetCore.Authorization;
 
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace mdRPG.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     public class TopicToPersonController : Controller
     {

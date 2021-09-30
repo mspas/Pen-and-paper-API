@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 using RPG.Api.Domain.Services.Profile;
 using RPG.Api.Domain.Models.Enums;
 using RPG.Api.Domain.Services.Communication;
+using Microsoft.AspNetCore.Authorization;
 
 namespace mdRPG.Controllers
 {
@@ -46,6 +47,7 @@ namespace mdRPG.Controllers
             return Ok(new CreateAccountResponse2(response.Success, response.Message, accountResource));
         }
 
+        [Authorize]
         [HttpPut("/api/account/{id}")]
         public async Task<IActionResult> Put(int id, [FromBody] ChangePassword passwordData)
         {
