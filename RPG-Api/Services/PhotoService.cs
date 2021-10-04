@@ -12,6 +12,7 @@ using RPG.Api.Domain.Repositories;
 using RPG.Api.Domain.Repositories.RGame;
 using RPG.Api.Domain.Repositories.RForum;
 using System.Collections.Generic;
+using RPG.Api.Domain.Services.Profile;
 
 namespace RPG.Api.Services
 {
@@ -22,16 +23,18 @@ namespace RPG.Api.Services
         private readonly IMessageForumRepository _messageForumRepository;
         private readonly IMessageRepository _messageRepository;
         private readonly IPhotoRepository _photoRepository;
+        private readonly IPersonalDataService _personalDataService;
         private readonly IUnitOfWork _unitOfWork;
         private readonly IHostingEnvironment _host;
 
-        public PhotoService(IPersonalDataRepository personalDataRepository, IGameRepository gameRepository, IMessageForumRepository messageForumRepository, IMessageRepository messageRepository, IPhotoRepository photoRepository, IUnitOfWork unitOfWork, IHostingEnvironment host)
+        public PhotoService(IPersonalDataRepository personalDataRepository, IGameRepository gameRepository, IMessageForumRepository messageForumRepository, IMessageRepository messageRepository, IPhotoRepository photoRepository, IPersonalDataService personalDataService, IUnitOfWork unitOfWork, IHostingEnvironment host)
         {
             _personalDataRepository = personalDataRepository;
             _gameRepository = gameRepository;
             _messageForumRepository = messageForumRepository;
             _messageRepository = messageRepository;
             _photoRepository = photoRepository;
+            _personalDataService = personalDataService;
             _unitOfWork = unitOfWork;
             _host = host;
         }
@@ -47,6 +50,15 @@ namespace RPG.Api.Services
             if (profile == null)
                 return new BaseResponse(false, "Account not found.");
 
+            if (profile.photoName != "unknown.png" || profile.photoName != "" || profile.photoName != null)
+            {
+                var res = await DeletePhotoAsync(1, id, profile.photoName);
+                if (!res.Success)
+                {
+                    return new BaseResponse(false, "Deleting current profile photo erorr!");
+                }
+            }
+
             var uploadFolderPath = Path.Combine(_host.WebRootPath, "uploads");
             if (!Directory.Exists(uploadFolderPath))
                 Directory.CreateDirectory(uploadFolderPath);
@@ -59,7 +71,7 @@ namespace RPG.Api.Services
                 await file.CopyToAsync(stream);
             }
 
-            var photo = new Photo { FileName = fileName };
+            var photo = new Photo { FileName = fileName, sourceId = id };
 
             if (isBgPhoto)
             {
@@ -120,10 +132,6 @@ namespace RPG.Api.Services
 
         public async Task<BaseResponse> UploadPostPhotoAsync(int id, IFormFile file)
         {
-            /*var msg = await _messageForumRepository.GetMessageAsync(id);
-            if (msg == null)
-                return new BaseResponse(false, "Message not found.");*/
-
             var uploadFolderPath = Path.Combine(_host.WebRootPath, "uploads");
             if (!Directory.Exists(uploadFolderPath))
                 Directory.CreateDirectory(uploadFolderPath);
@@ -135,15 +143,6 @@ namespace RPG.Api.Services
             {
                 await file.CopyToAsync(stream);
             }
-
-
-            var photo = new Photo { FileName = file.FileName, sourceId = id };
-
-            //msg.isPhoto = true;
-            //var response = _messageForumRepository.EditMessage(msg);
-
-            await _photoRepository.AddPhotoAsync(photo);
-            await _unitOfWork.CompleteAsync();
 
             return new BaseResponse(true, fileName);
         }
@@ -173,13 +172,50 @@ namespace RPG.Api.Services
             return new BaseResponse(true, null);
         }
 
-        public async Task<BaseResponse> DeletePhotoAsync(int userId, string fileName)
+        public async Task<BaseResponse> DeletePhotoAsync(int photoType, int ownerId, string fileName)
         {
-            var profile = await _personalDataRepository.GetProfileById(userId);
+            BaseResponse response = null;
+            switch (photoType)
+            {
+                case 1:
+                    var profile = await _personalDataRepository.GetProfileById(ownerId);
+                    profile.photoName = "unknown.png";
+                    response = await _personalDataService.EditProfileDataAsync(ownerId, profile);
+                    if (response.Success)
+                    {
+                        var photo = await _photoRepository.GetPhotobyNameAsync(fileName);
+                        response = _photoRepository.DeletePhoto(photo);
+                    }
+                    break;
+                case 2:
+                    return new BaseResponse(false, "Not implemented");
+                case 3:
+                    break;
+                default:
+                    return new BaseResponse(false, "Delete photo type error.");
+            }
 
-            //  DEFINITELY TODO SOON //
+            var uploadFolderPath = Path.Combine(_host.WebRootPath, "uploads");
+            if (!Directory.Exists(uploadFolderPath))
+                return new BaseResponse(false, "Uploads directory not found!");
 
-            throw new NotImplementedException();
+            var filePath = Path.Combine(uploadFolderPath, fileName);
+
+            try
+            {
+                if (File.Exists(filePath))
+                {
+                    File.Delete(filePath);
+                    return new BaseResponse(true, "File deleted!");
+                }
+                else
+                    return new BaseResponse(false, "File not found!");
+            }
+            catch (IOException ioExp)
+            {
+                Console.WriteLine(ioExp.Message);
+                return new BaseResponse(false, ioExp.Message);
+            }
         }
         
         public string GetMimeType(string fileName)

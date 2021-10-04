@@ -78,6 +78,7 @@ namespace RPG.Api.Services.Profile
             profileToUpdate.email = newProfile.email;
             profileToUpdate.age = newProfile.age;
             profileToUpdate.city = newProfile.city;
+            profileToUpdate.photoName = newProfile.photoName;
 
             return profileToUpdate;
         }

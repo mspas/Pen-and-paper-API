@@ -72,9 +72,9 @@ namespace mdRPG.Controllers
 
         [Authorize]
         [HttpDelete("{profileOrGame}/{userId}/{fileName}")]
-        public async Task<BaseResponse> DeleteFile(bool profileOrGame, int userId, string fileName)
+        public async Task<BaseResponse> DeleteFile(int photoType, int ownerId, string fileName)
         {
-            return await _photoService.DeletePhotoAsync(userId, fileName);
+            return await _photoService.DeletePhotoAsync(photoType, ownerId, fileName);
         }
     }
 }

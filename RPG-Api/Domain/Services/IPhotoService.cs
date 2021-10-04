@@ -16,7 +16,7 @@ namespace RPG.Api.Domain.Services
         Task<BaseResponse> UploadGamePhotoAsync(int id, bool isBgPhoto, IFormFile file);
         Task<BaseResponse> UploadPostPhotoAsync(int id, IFormFile file);
         Task<BaseResponse> UploadMessagePhotoAsync(int id, IFormFile file);
-        Task<BaseResponse> DeletePhotoAsync(int userId, string fileName);
+        Task<BaseResponse> DeletePhotoAsync(int photoType, int ownerId, string fileName);
         string GetMimeType(string fileName);
     }
 }

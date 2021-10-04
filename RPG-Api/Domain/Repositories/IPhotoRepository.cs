@@ -9,6 +9,7 @@ namespace RPG.Api.Domain.Repositories
 {
     public interface IPhotoRepository
     {
+        Task<Photo> GetPhotobyNameAsync(string fileName);
         Task<List<Photo>> GetPhotoListAsync(int sourceId);
         Task<BaseResponse> AddPhotoAsync(Photo photo);
         BaseResponse DeletePhoto(Photo photo);

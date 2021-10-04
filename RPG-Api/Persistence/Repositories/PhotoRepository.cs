@@ -14,6 +14,10 @@ namespace RPG.Api.Persistence.Repositories
         public PhotoRepository(RpgDbContext context) : base(context)
         {
         }
+        public async Task<Photo> GetPhotobyNameAsync(string fileName)
+        {
+            return await _context.Photos.SingleOrDefaultAsync(mbox => mbox.FileName == fileName);
+        }
 
         public async Task<BaseResponse> AddPhotoAsync(Photo photo)
         {
