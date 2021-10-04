@@ -77,7 +77,7 @@ namespace RPG.Api.Services
 
             await _unitOfWork.CompleteAsync();
 
-            return response;
+            return new BaseResponse(true, fileName);
         }
 
         public async Task<BaseResponse> UploadGamePhotoAsync(int id, bool isBgPhoto, IFormFile file)
@@ -115,21 +115,21 @@ namespace RPG.Api.Services
             
             await _unitOfWork.CompleteAsync();
 
-            return response;
+            return new BaseResponse(true, fileName);
         }
 
         public async Task<BaseResponse> UploadPostPhotoAsync(int id, IFormFile file)
         {
-            var msg = await _messageForumRepository.GetMessageAsync(id);
+            /*var msg = await _messageForumRepository.GetMessageAsync(id);
             if (msg == null)
-                return new BaseResponse(false, "Message not found.");
+                return new BaseResponse(false, "Message not found.");*/
 
             var uploadFolderPath = Path.Combine(_host.WebRootPath, "uploads");
             if (!Directory.Exists(uploadFolderPath))
                 Directory.CreateDirectory(uploadFolderPath);
 
-            //string fileName = Guid.NewGuid().ToString() + Path.GetExtension(file.FileName);
-            var filePath = Path.Combine(uploadFolderPath, file.FileName);
+            string fileName = Guid.NewGuid().ToString() + Path.GetExtension(file.FileName);
+            var filePath = Path.Combine(uploadFolderPath, fileName);
 
             using (var stream = new FileStream(filePath, FileMode.Create))
             {
@@ -139,13 +139,13 @@ namespace RPG.Api.Services
 
             var photo = new Photo { FileName = file.FileName, sourceId = id };
 
-            msg.isPhoto = true;
-            var response = _messageForumRepository.EditMessage(msg);
+            //msg.isPhoto = true;
+            //var response = _messageForumRepository.EditMessage(msg);
 
             await _photoRepository.AddPhotoAsync(photo);
             await _unitOfWork.CompleteAsync();
 
-            return response;
+            return new BaseResponse(true, fileName);
         }
 
         public async Task<BaseResponse> UploadMessagePhotoAsync(int id, IFormFile file)

@@ -35,12 +35,12 @@ namespace RPG.Api.Persistence.Repositories.RForum
 
         public async Task<MessageForum> GetMessageAsync(int messageId)
         {
-            return await _context.MessagesForum.FirstAsync(mbox => mbox.Id == messageId);
+            return await _context.MessagesForum.SingleOrDefaultAsync(mbox => mbox.Id == messageId);
         }
 
         public async Task<MessageForum> GetTopicLastMessageAsync(int topicId)
         {
-            return await _context.MessagesForum.Where(mbox => mbox.topicId == topicId).OrderByDescending(mbox => mbox.sendDdate).FirstOrDefaultAsync();
+            return await _context.MessagesForum.Where(mbox => mbox.topicId == topicId).OrderByDescending(mbox => mbox.sendDdate).SingleOrDefaultAsync(); //FirstOrDefaultAsync
         }
 
         public async Task<List<MessageForum>> GetMessageListAsync(int topicId, int pageNumber, int pageSize)

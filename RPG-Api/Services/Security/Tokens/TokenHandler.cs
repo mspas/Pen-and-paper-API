@@ -78,8 +78,6 @@ namespace RPG.Api.Services.Security.Tokens
         {
             var accessTokenExpiration = DateTime.UtcNow.AddSeconds(_tokenOptions.AccessTokenExpiration);
 
-            Console.WriteLine(_tokenOptions.Issuer, _tokenOptions.Audience);
-
             var securityToken = new JwtSecurityToken
             (
                 issuer: _tokenOptions.Issuer,

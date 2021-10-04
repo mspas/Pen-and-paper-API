@@ -42,9 +42,9 @@ namespace RPG.Api.Controllers
 
             if (response.Success)
             {
-                return Ok(response.Topic);
+                return Ok(response);
             }
-            return NotFound(response.Message);
+            return NotFound(response);
         }
 
         [HttpPut("{id}")]
@@ -54,9 +54,9 @@ namespace RPG.Api.Controllers
 
             if (response.Success)
             {
-                return Ok(response.Topic);
+                return Ok(response);
             }
-            return NotFound(response.Message);
+            return NotFound(response);
         }
 
         [HttpDelete("{id}")]
@@ -66,9 +66,9 @@ namespace RPG.Api.Controllers
 
             if (response.Success)
             {
-                return Ok(response.Success);
+                return Ok(response);
             }
-            return NotFound(response.Message);
+            return NotFound(response);
         }
     }
 }
