@@ -2,6 +2,7 @@
 using RPG.Api.Domain.Repositories;
 using RPG.Api.Domain.Repositories.RForum;
 using RPG.Api.Domain.Repositories.RGame;
+using RPG.Api.Domain.Services;
 using RPG.Api.Domain.Services.Communication;
 using RPG.Api.Domain.Services.SForum;
 using RPG.Api.Resources;
@@ -18,14 +19,16 @@ namespace RPG.Api.Services.SForum
         private readonly ITopicToPersonRepository _topicToPersonRepository;
         private readonly IMessageForumRepository _messageForumRepository;
         private readonly IGameRepository _gameRepository;
+        private readonly IPhotoService _photoService;
         private readonly IUnitOfWork _unitOfWork;
 
-        public TopicService(ITopicRepository topicRepository, ITopicToPersonRepository topicToPersonRepository, IMessageForumRepository messageForumRepository, IGameRepository gameRepository, IUnitOfWork unitOfWork)
+        public TopicService(ITopicRepository topicRepository, ITopicToPersonRepository topicToPersonRepository, IMessageForumRepository messageForumRepository, IGameRepository gameRepository, IPhotoService photoService, IUnitOfWork unitOfWork)
         {
             _topicRepository = topicRepository;
             _topicToPersonRepository = topicToPersonRepository;
             _messageForumRepository = messageForumRepository;
             _gameRepository = gameRepository;
+            _photoService = photoService;
             _unitOfWork = unitOfWork;
         }
 
@@ -66,9 +69,73 @@ namespace RPG.Api.Services.SForum
         public async Task<BaseResponse> DeleteTopicAsync(int topicId)
         {
             var topic = await _topicRepository.GetTopicAsync(topicId);
+
+            var res = await DeleteImagesFromPosts(topic.Messages.ToList());
+
+            if (!res.Success)
+            {
+                return res;
+            }
+
             var response = _topicRepository.DeleteTopic(topic);
             await _unitOfWork.CompleteAsync();
             return response;
+        }
+
+        private async Task<BaseResponse> DeleteImagesFromPosts(List<MessageForum> messages)
+        {
+            var response = new BaseResponse(true, null);
+
+            foreach (MessageForum message in messages)
+            {
+                var fileNamesList = ExtractFileNames(message);
+
+                if (fileNamesList == null || fileNamesList.Count < 1)
+                {
+                    return response;
+                }
+
+                foreach (string fileName in fileNamesList)
+                {
+                    var res = await _photoService.DeletePhotoAsync(3, message.senderId, fileName);
+                    if (!res.Success)
+                    {
+                        response = res;
+                    }
+                }
+            }
+
+            return response;
+        }
+
+        private List<string> ExtractFileNames(MessageForum message)
+        {
+            var arraySplitImg = message.bodyMessage.Split("<img src=\"");
+
+            List<string> arraySplit = new List<string>();
+            List<string> postFileNames = new List<string>();
+
+            if (arraySplitImg.Length < 2)
+            {
+                return postFileNames;
+            }
+
+            for (int i = 0; i < arraySplitImg.Length; i++)
+            {
+                var element = arraySplitImg[i].Split("\" alt=\"findme\">");
+                for (int j = 0; j < element.Length; j++)
+                    arraySplit.Add(element[j]);
+            }
+
+            for (int i = 0; i < arraySplit.Count; i++)
+            {
+                if (i % 2 != 0)
+                {
+                    postFileNames.Add(arraySplit[i]);
+                }
+            }
+
+            return postFileNames;
         }
 
         public async Task<TopicResponse> EditTopicAsync(Topic topic)

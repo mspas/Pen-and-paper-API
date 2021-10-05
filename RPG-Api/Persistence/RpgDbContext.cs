@@ -97,7 +97,7 @@ namespace RPG.Api.Persistence
                         .HasOne(m => m.forum)
                         .WithMany(t => t.Topics)
                         .HasForeignKey(m => m.forumId)
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<MessageForum>()
                         .HasOne(m => m.topic)
@@ -109,7 +109,7 @@ namespace RPG.Api.Persistence
                         .HasOne(m => m.topic)
                         .WithMany(t => t.Messages)
                         .HasForeignKey(m => m.topicId)
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<TopicToPerson>()
                         .HasOne(m => m.UserNotificationData)
@@ -121,7 +121,7 @@ namespace RPG.Api.Persistence
                         .HasOne(m => m.Topic)
                         .WithMany(t => t.UsersConnected)
                         .HasForeignKey(m => m.topicId)
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }
