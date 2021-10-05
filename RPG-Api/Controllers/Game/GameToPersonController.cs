@@ -52,8 +52,8 @@ public class GameToPersonController : Controller
         }
 
     // PUT api/<controller>/5
-        [HttpPut("{id}")]
-        public async Task<IActionResult> Put(int id, [FromBody]GameToPerson g2p)
+        [HttpPut]
+        public async Task<IActionResult> Put([FromBody]GameToPerson g2p)
         {
             var response = await _gameToPersonService.EditG2PAsync(g2p);
             if (response.Success)
@@ -64,7 +64,7 @@ public class GameToPersonController : Controller
         }
 
     // DELETE api/<controller>/5
-    [HttpDelete("{id}")]
+        [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {
             var response = await _gameToPersonService.DeleteG2PAsync(id);

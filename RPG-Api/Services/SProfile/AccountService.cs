@@ -37,7 +37,7 @@ namespace RPG.Api.Services.Profile
 
             account.password = _passwordHasher.HashPassword(account.password);
             
-            await _accountRepository.AddAsync(account, userRoles);
+            var response = await _accountRepository.AddAsync(account, userRoles);
             await _unitOfWork.CompleteAsync();
 
             var notificationEmpty = await _notificationRepository.GetNotificationDataAsync(account.Id);

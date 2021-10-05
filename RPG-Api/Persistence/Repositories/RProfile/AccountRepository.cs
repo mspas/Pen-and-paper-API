@@ -19,9 +19,10 @@ namespace RPG.Api.Persistence.Repositories.Profile
             _context = context;
         }
 
-        public async Task AddAsync(Account account, ERole[] userRoles)
+        public async Task<CreateAccountResponse> AddAsync(Account account, ERole[] userRoles)
         {
-            var roles = await _context.Roles.Where(r => userRoles.Any(ur => ur.ToString() == r.Name)).ToListAsync();
+            var userRoleNames = userRoles.Select(ur => ur.ToString());
+            var roles = await _context.Roles.Where(r => userRoleNames.Contains(r.Name)).ToListAsync();
 
             foreach (var role in roles)
             {
@@ -29,6 +30,7 @@ namespace RPG.Api.Persistence.Repositories.Profile
             }
 
             _context.Accounts.Add(account);
+            return new CreateAccountResponse(true, null, account);
         }
 
         public Account FindByLoginAsync(string login)

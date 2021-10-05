@@ -8,11 +8,11 @@ namespace RPG.Api.Domain.Services.Communication
 {
     public class CreateAccountResponse2 : BaseResponse
     {
-        public AccountResource Account { get; private set; }
+        public PersonalDataResource PersonalData { get; private set; }
 
-        public CreateAccountResponse2(bool success, string message, AccountResource account) : base(success, message)
+        public CreateAccountResponse2(bool success, string message, PersonalDataResource personalData) : base(success, message)
         {
-            Account = account;
+            PersonalData = personalData;
         }
     }
 }

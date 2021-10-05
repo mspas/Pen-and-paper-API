@@ -10,7 +10,7 @@ namespace RPG.Api.Domain.Repositories.Profile
 {
     public interface IAccountRepository
     {
-        Task AddAsync(Account account, ERole[] userRoles);
+        Task<CreateAccountResponse> AddAsync(Account account, ERole[] userRoles);
         Account FindByLoginAsync(string login);
         Account FindByIdAsync(int id);
         Task<BaseResponse> EditPasswordAsync(Account account);

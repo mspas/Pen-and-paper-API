@@ -50,8 +50,9 @@ namespace RPG.Api.Services
             if (profile == null)
                 return new BaseResponse(false, "Account not found.");
 
-            if (profile.photoName != "unknown.png" || profile.photoName != "" || profile.photoName != null)
+            if (profile.photoName != null && !string.Equals(profile.photoName, "unknown.png"))
             {
+                Console.WriteLine("po chuj " + profile.photoName);
                 var res = await DeletePhotoAsync(1, id, profile.photoName);
                 if (!res.Success)
                 {
@@ -179,7 +180,7 @@ namespace RPG.Api.Services
             {
                 case 1:
                     var profile = await _personalDataRepository.GetProfileById(ownerId);
-                    profile.photoName = "unknown.png";
+                    profile.photoName = null;
                     response = await _personalDataService.EditProfileDataAsync(ownerId, profile);
                     if (response.Success)
                     {

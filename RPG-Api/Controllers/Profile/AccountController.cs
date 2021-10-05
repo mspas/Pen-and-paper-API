@@ -43,8 +43,8 @@ namespace mdRPG.Controllers
                 return BadRequest(response);
             }
 
-            var accountResource = _mapper.Map<Account, AccountResource>(response.Account);
-            return Ok(new CreateAccountResponse2(response.Success, response.Message, accountResource));
+            var profileResource = _mapper.Map<PersonalData, PersonalDataResource>(response.Account.PersonalData);
+            return Ok(new CreateAccountResponse2(response.Success, response.Message, profileResource));
         }
 
         [Authorize]
