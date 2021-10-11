@@ -1,7 +1,8 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp3.0</TargetFramework>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <UserSecretsId>bdf4e2ea-98f8-41d4-bad4-f927afa76775</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>
@@ -30,7 +31,80 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="wwwroot\" />
+    <Content Remove="wwwroot\Client\dist\3rdpartylicenses.txt" />
+    <Content Remove="wwwroot\Client\dist\assets\biglogo.png" />
+    <Content Remove="wwwroot\Client\dist\assets\character.png" />
+    <Content Remove="wwwroot\Client\dist\assets\fantasy1.png" />
+    <Content Remove="wwwroot\Client\dist\assets\flag_t.png" />
+    <Content Remove="wwwroot\Client\dist\assets\flag_t1.png" />
+    <Content Remove="wwwroot\Client\dist\assets\logo.png" />
+    <Content Remove="wwwroot\Client\dist\assets\mafia1.png" />
+    <Content Remove="wwwroot\Client\dist\assets\pnp.png" />
+    <Content Remove="wwwroot\Client\dist\assets\pnp1.png" />
+    <Content Remove="wwwroot\Client\dist\assets\scifi.png" />
+    <Content Remove="wwwroot\Client\dist\assets\topic-new.png" />
+    <Content Remove="wwwroot\Client\dist\assets\topic.png" />
+    <Content Remove="wwwroot\Client\dist\assets\unknown-no-bg.png" />
+    <Content Remove="wwwroot\Client\dist\assets\unknown.png" />
+    <Content Remove="wwwroot\Client\dist\assets\unknown1.png" />
+    <Content Remove="wwwroot\Client\dist\BarkingCat.6031fd3eabbe8b75633a.otf" />
+    <Content Remove="wwwroot\Client\dist\favicon.ico" />
+    <Content Remove="wwwroot\Client\dist\index.html" />
+    <Content Remove="wwwroot\Client\dist\main-es2015.b17e2dba001884ad53a2.js" />
+    <Content Remove="wwwroot\Client\dist\main-es5.b17e2dba001884ad53a2.js" />
+    <Content Remove="wwwroot\Client\dist\polyfills-es2015.5b10b8fd823b6392f1fd.js" />
+    <Content Remove="wwwroot\Client\dist\polyfills-es5.8856b1c0dfe3ebd79cff.js" />
+    <Content Remove="wwwroot\Client\dist\runtime-es2015.c5fa8325f89fc516600b.js" />
+    <Content Remove="wwwroot\Client\dist\runtime-es5.c5fa8325f89fc516600b.js" />
+    <Content Remove="wwwroot\Client\dist\scripts.ce2ef7991227c3b68641.js" />
+    <Content Remove="wwwroot\Client\dist\styles.3195732803ee336516d8.css" />
+    <Content Remove="wwwroot\FrontEnd\dist\3rdpartylicenses.txt" />
+    <Content Remove="wwwroot\FrontEnd\dist\assets\biglogo.png" />
+    <Content Remove="wwwroot\FrontEnd\dist\assets\character.png" />
+    <Content Remove="wwwroot\FrontEnd\dist\assets\fantasy1.png" />
+    <Content Remove="wwwroot\FrontEnd\dist\assets\flag_t.png" />
+    <Content Remove="wwwroot\FrontEnd\dist\assets\flag_t1.png" />
+    <Content Remove="wwwroot\FrontEnd\dist\assets\logo.png" />
+    <Content Remove="wwwroot\FrontEnd\dist\assets\mafia1.png" />
+    <Content Remove="wwwroot\FrontEnd\dist\assets\pnp.png" />
+    <Content Remove="wwwroot\FrontEnd\dist\assets\pnp1.png" />
+    <Content Remove="wwwroot\FrontEnd\dist\assets\scifi.png" />
+    <Content Remove="wwwroot\FrontEnd\dist\assets\topic-new.png" />
+    <Content Remove="wwwroot\FrontEnd\dist\assets\topic.png" />
+    <Content Remove="wwwroot\FrontEnd\dist\assets\unknown-no-bg.png" />
+    <Content Remove="wwwroot\FrontEnd\dist\assets\unknown.png" />
+    <Content Remove="wwwroot\FrontEnd\dist\assets\unknown1.png" />
+    <Content Remove="wwwroot\FrontEnd\dist\BarkingCat.6031fd3eabbe8b75633a.otf" />
+    <Content Remove="wwwroot\FrontEnd\dist\favicon.ico" />
+    <Content Remove="wwwroot\FrontEnd\dist\index.html" />
+    <Content Remove="wwwroot\FrontEnd\dist\main-es2015.b17e2dba001884ad53a2.js" />
+    <Content Remove="wwwroot\FrontEnd\dist\main-es5.b17e2dba001884ad53a2.js" />
+    <Content Remove="wwwroot\FrontEnd\dist\polyfills-es2015.5b10b8fd823b6392f1fd.js" />
+    <Content Remove="wwwroot\FrontEnd\dist\polyfills-es5.8856b1c0dfe3ebd79cff.js" />
+    <Content Remove="wwwroot\FrontEnd\dist\runtime-es2015.c5fa8325f89fc516600b.js" />
+    <Content Remove="wwwroot\FrontEnd\dist\runtime-es5.c5fa8325f89fc516600b.js" />
+    <Content Remove="wwwroot\FrontEnd\dist\scripts.ce2ef7991227c3b68641.js" />
+    <Content Remove="wwwroot\FrontEnd\dist\styles.3195732803ee336516d8.css" />
+    <Content Remove="wwwroot\uploads\0865eb8e-e72d-4b37-a7b6-5816b53a98db.png" />
+    <Content Remove="wwwroot\uploads\0ba2d9ea-f281-4a11-a429-9b804f78e0c2.png" />
+    <Content Remove="wwwroot\uploads\1fac1524-957a-4420-97f4-3b943ff38cdb.PNG" />
+    <Content Remove="wwwroot\uploads\4434fc40-e999-4bbf-b412-9389c85949d9.png" />
+    <Content Remove="wwwroot\uploads\455bea8d-8578-4f0d-bd4b-2a3ba6ac9118.png" />
+    <Content Remove="wwwroot\uploads\6727eadf-51f3-4d4c-bab4-fbe0114b8f79.png" />
+    <Content Remove="wwwroot\uploads\7073ab5d-8e2e-4255-a060-872b68a7c9c4.JPG" />
+    <Content Remove="wwwroot\uploads\7ccecd6d-c410-4c99-a24b-b63d9d1b66e6.PNG" />
+    <Content Remove="wwwroot\uploads\7d17e7bb-18db-4976-a0c7-9d7b83a3f25e.PNG" />
+    <Content Remove="wwwroot\uploads\8e31fb74-e516-4e0a-ad53-a843f1c2f336.png" />
+    <Content Remove="wwwroot\uploads\a95d6413-9bcb-422c-8a42-c6907df4a27a.jpg" />
+    <Content Remove="wwwroot\uploads\b9bb5c5a-5eb7-4cd5-a932-39b18c81f64f.png" />
+    <Content Remove="wwwroot\uploads\cbd746b3-d519-4785-a069-cc5f3d278130.PNG" />
+    <Content Remove="wwwroot\uploads\cc78a2fc-4bb6-4a59-aa63-46e0932c8770.png" />
+    <Content Remove="wwwroot\uploads\d89f5566-0aae-456d-b07e-d335d9c66108.PNG" />
+    <Content Remove="wwwroot\uploads\unknown.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Client\" />
   </ItemGroup>
 
   <ItemGroup>
@@ -45,7 +119,7 @@
     <PackageReference Include="Microsoft.AspNetCore.SpaServices.Extensions" Version="3.0.0" />
     <PackageReference Include="Microsoft.CodeAnalysis.Common" Version="2.8.2" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="3.1.10" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.1.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.1.3" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="3.1.10">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -56,6 +130,318 @@
 
   <ItemGroup>
     <DotNetCliToolReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Tools" Version="2.0.4" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="wwwroot\Client\dist\3rdpartylicenses.txt">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </None>
+    <None Include="wwwroot\Client\dist\assets\biglogo.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </None>
+    <None Include="wwwroot\Client\dist\assets\character.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </None>
+    <None Include="wwwroot\Client\dist\assets\fantasy1.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </None>
+    <None Include="wwwroot\Client\dist\assets\flag_t.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </None>
+    <None Include="wwwroot\Client\dist\assets\flag_t1.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </None>
+    <None Include="wwwroot\Client\dist\assets\logo.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </None>
+    <None Include="wwwroot\Client\dist\assets\mafia1.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </None>
+    <None Include="wwwroot\Client\dist\assets\pnp.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </None>
+    <None Include="wwwroot\Client\dist\assets\pnp1.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </None>
+    <None Include="wwwroot\Client\dist\assets\scifi.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </None>
+    <None Include="wwwroot\Client\dist\assets\topic-new.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </None>
+    <None Include="wwwroot\Client\dist\assets\topic.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </None>
+    <None Include="wwwroot\Client\dist\assets\unknown-no-bg.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </None>
+    <None Include="wwwroot\Client\dist\assets\unknown.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </None>
+    <None Include="wwwroot\Client\dist\assets\unknown1.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </None>
+    <None Include="wwwroot\Client\dist\BarkingCat.6031fd3eabbe8b75633a.otf">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </None>
+    <None Include="wwwroot\Client\dist\favicon.ico">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </None>
+    <None Include="wwwroot\Client\dist\index.html">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </None>
+    <None Include="wwwroot\Client\dist\main-es2015.b17e2dba001884ad53a2.js">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </None>
+    <None Include="wwwroot\Client\dist\main-es5.b17e2dba001884ad53a2.js">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </None>
+    <None Include="wwwroot\Client\dist\polyfills-es2015.5b10b8fd823b6392f1fd.js">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </None>
+    <None Include="wwwroot\Client\dist\polyfills-es5.8856b1c0dfe3ebd79cff.js">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </None>
+    <None Include="wwwroot\Client\dist\runtime-es2015.c5fa8325f89fc516600b.js">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </None>
+    <None Include="wwwroot\Client\dist\runtime-es5.c5fa8325f89fc516600b.js">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </None>
+    <None Include="wwwroot\Client\dist\scripts.ce2ef7991227c3b68641.js">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </None>
+    <None Include="wwwroot\Client\dist\styles.3195732803ee336516d8.css">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </None>
+    <None Include="wwwroot\uploads\0865eb8e-e72d-4b37-a7b6-5816b53a98db.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </None>
+    <None Include="wwwroot\uploads\0ba2d9ea-f281-4a11-a429-9b804f78e0c2.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </None>
+    <None Include="wwwroot\uploads\1fac1524-957a-4420-97f4-3b943ff38cdb.PNG">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </None>
+    <None Include="wwwroot\uploads\4434fc40-e999-4bbf-b412-9389c85949d9.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </None>
+    <None Include="wwwroot\uploads\455bea8d-8578-4f0d-bd4b-2a3ba6ac9118.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </None>
+    <None Include="wwwroot\uploads\6727eadf-51f3-4d4c-bab4-fbe0114b8f79.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </None>
+    <None Include="wwwroot\uploads\7073ab5d-8e2e-4255-a060-872b68a7c9c4.JPG">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </None>
+    <None Include="wwwroot\uploads\7ccecd6d-c410-4c99-a24b-b63d9d1b66e6.PNG">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </None>
+    <None Include="wwwroot\uploads\7d17e7bb-18db-4976-a0c7-9d7b83a3f25e.PNG">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </None>
+    <None Include="wwwroot\uploads\8e31fb74-e516-4e0a-ad53-a843f1c2f336.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </None>
+    <None Include="wwwroot\uploads\a95d6413-9bcb-422c-8a42-c6907df4a27a.jpg">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </None>
+    <None Include="wwwroot\uploads\b9bb5c5a-5eb7-4cd5-a932-39b18c81f64f.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </None>
+    <None Include="wwwroot\uploads\cbd746b3-d519-4785-a069-cc5f3d278130.PNG">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </None>
+    <None Include="wwwroot\uploads\cc78a2fc-4bb6-4a59-aa63-46e0932c8770.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </None>
+    <None Include="wwwroot\uploads\d89f5566-0aae-456d-b07e-d335d9c66108.PNG">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </None>
+    <None Include="wwwroot\uploads\unknown.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="wwwroot\FrontEnd\dist\3rdpartylicenses.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="wwwroot\FrontEnd\dist\assets\biglogo.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="wwwroot\FrontEnd\dist\assets\character.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="wwwroot\FrontEnd\dist\assets\fantasy1.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="wwwroot\FrontEnd\dist\assets\flag_t.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="wwwroot\FrontEnd\dist\assets\flag_t1.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="wwwroot\FrontEnd\dist\assets\logo.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="wwwroot\FrontEnd\dist\assets\mafia1.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="wwwroot\FrontEnd\dist\assets\pnp.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="wwwroot\FrontEnd\dist\assets\pnp1.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="wwwroot\FrontEnd\dist\assets\scifi.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="wwwroot\FrontEnd\dist\assets\topic-new.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="wwwroot\FrontEnd\dist\assets\topic.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="wwwroot\FrontEnd\dist\assets\unknown-no-bg.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="wwwroot\FrontEnd\dist\assets\unknown.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="wwwroot\FrontEnd\dist\assets\unknown1.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="wwwroot\FrontEnd\dist\BarkingCat.6031fd3eabbe8b75633a.otf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="wwwroot\FrontEnd\dist\favicon.ico">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="wwwroot\FrontEnd\dist\index.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="wwwroot\FrontEnd\dist\main-es2015.b17e2dba001884ad53a2.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="wwwroot\FrontEnd\dist\main-es5.b17e2dba001884ad53a2.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="wwwroot\FrontEnd\dist\polyfills-es2015.5b10b8fd823b6392f1fd.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="wwwroot\FrontEnd\dist\polyfills-es5.8856b1c0dfe3ebd79cff.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="wwwroot\FrontEnd\dist\runtime-es2015.c5fa8325f89fc516600b.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="wwwroot\FrontEnd\dist\runtime-es5.c5fa8325f89fc516600b.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="wwwroot\FrontEnd\dist\scripts.ce2ef7991227c3b68641.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="wwwroot\FrontEnd\dist\styles.3195732803ee336516d8.css">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="Client\dist\3rdpartylicenses.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Client\dist\assets\biglogo.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Client\dist\assets\character.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Client\dist\assets\fantasy1.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Client\dist\assets\flag_t.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Client\dist\assets\flag_t1.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Client\dist\assets\logo.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Client\dist\assets\mafia1.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Client\dist\assets\pnp.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Client\dist\assets\pnp1.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Client\dist\assets\scifi.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Client\dist\assets\topic-new.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Client\dist\assets\topic.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Client\dist\assets\unknown-no-bg.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Client\dist\assets\unknown.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Client\dist\assets\unknown1.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Client\dist\BarkingCat.6031fd3eabbe8b75633a.otf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Client\dist\favicon.ico">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Client\dist\index.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Client\dist\main-es2015.2ee00eedbf165507c28c.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Client\dist\main-es2015.b17e2dba001884ad53a2.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Client\dist\main-es2015.eaf5127e87595b127f4e.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Client\dist\main-es5.2ee00eedbf165507c28c.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Client\dist\main-es5.b17e2dba001884ad53a2.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Client\dist\main-es5.eaf5127e87595b127f4e.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Client\dist\polyfills-es2015.5b10b8fd823b6392f1fd.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Client\dist\polyfills-es5.8856b1c0dfe3ebd79cff.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Client\dist\runtime-es2015.c5fa8325f89fc516600b.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Client\dist\runtime-es5.c5fa8325f89fc516600b.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Client\dist\scripts.ce2ef7991227c3b68641.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Client\dist\styles.3195732803ee336516d8.css">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
 </Project>

@@ -1,3 +1,10 @@
 RPG-Api/wwwroot/uploads
+RPG-Api/wwwroot/
+RPG-Api/wwwroot/dist
 .vs/
-RPG-Api/FrontEnd
+RPG-Api/Client
+RPG-Api/bin
+RPG-Api/obj
+RPG-Api/Properties
+RPG-Api/.config
+RPG-Api/appsettingskey.json

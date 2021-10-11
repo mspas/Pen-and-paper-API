@@ -31,6 +31,8 @@ using RPG.Api.Domain.Repositories.RForum;
 using RPG.Api.Domain.Services.SForum;
 using RPG.Api.Persistence.Repositories.RForum;
 using RPG.Api.Services.SForum;
+using Microsoft.Extensions.FileProviders;
+using System.IO;
 
 namespace RPG.Api
 {
@@ -59,7 +61,7 @@ namespace RPG.Api
             services.AddDbContext<RpgDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("Default")));
 
             services.AddSpaStaticFiles(configuration => {
-                configuration.RootPath = "FrontEnd/dist";
+                configuration.RootPath = "Client/dist";
             });
 
             services.AddScoped<IAuthorizeService, AuthorizeService>();
@@ -168,10 +170,13 @@ namespace RPG.Api
                 endpoints.MapControllers();
             });
 
+            app.UseDefaultFiles();
+            app.UseStaticFiles();
+
             app.UseSpaStaticFiles();
             app.UseSpa(spa =>
             {
-                spa.Options.SourcePath = "FrontEnd";
+                spa.Options.SourcePath = "Client/dist";
             });
         }
     }
